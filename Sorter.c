@@ -76,20 +76,60 @@ int main(int argc, char** argv){
 		return 1;
 	}
 	
-	//for new sorter:
-	//DIR * dirp; //directory pointer
-	//set dirp to given char* dir_name
-	//dirp=opendir(dir_name);
-	//if(dirp==NULL){
-	//return error invalid directory name
-	//}
-	//chdir(dir_name);	//change current directory to given directory
-	//struct dirent* duwang;	//requires dirent.h library
-	//duwang=readdir(dirp);
-	//while((duwang!=NULL){
-	//kinda iffy what goes here besides forking stuff
-	//}
+/*	for new sorter:
+	DIR * dirp; //directory pointer
+	set dirp to given char* dir_name
+	dirp=opendir(dir_name);
+	if(dirp==NULL){
+	return error invalid directory name
+	}
+	chdir(dir_name);	//change current directory to given directory
+	struct dirent* duwang;	//requires dirent.h library
+	duwang=readdir(dirp);
+	while((duwang!=NULL){
+	* 
+	* 
+	* 
+	kinda iffy what goes here besides forking stuff
 	
+	char* file_name=  whatever the current file is
+	int bodega=strlen(file_name)-1;
+	if(file_name[bodega-4]=='.'){
+	* 
+	* if(file_name[bodega-4]=='c')){
+	* 
+		* 
+			* if(file_name[bodega-4]=='s')){
+				* if(file_name[bodega-4]=='v')){
+				* 
+				* 	FILE* fp=fopen(file_name,"r");
+				* 
+				* perhaps fork here and run sort?
+				* 
+				* 
+				* 
+				* 
+				* fclose(fp);
+				* create an output file
+				* char* dest_file;
+				* FILE* dfp=fopen(dest_file,"wb");
+				* //write stuff to here for output 
+				* fclose(dfp);
+				* return;
+				* 
+				* 
+				* }
+			* }
+			* 
+		* }
+	* 
+	* 
+	* 
+	* }
+	
+	}
+	
+*/
 	
 	
 	int loop=0;
