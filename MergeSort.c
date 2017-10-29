@@ -16,9 +16,9 @@ film** mergesort(film** array, int size, int col){//pointer to unsorted array, s
 	 
 	 for(i=0; i<mid; i++){//loop for filling arrayA, mid is size of A
 		 //printf("%d\n", i);
-		 if (i==5043){
-			 printf("here!\n");
-		 }
+		 //if (i==5043){
+			 //printf("here!\n");
+		 //}
 		 arrayA[i] = (film*) malloc(sizeof(film));
 		 array[i] = replace_NULL_w_empty(array[i]);
 		 arrayA[i] = replace_NULL_w_empty(arrayA[i]);
@@ -26,9 +26,9 @@ film** mergesort(film** array, int size, int col){//pointer to unsorted array, s
 	 }
 	 for(k=0; i<size; i++){//loop for filling arrayB, final k is size of B
 		 //printf("%d\n", i);
-		 if (i==5043){
-			 printf("here!\n");
-		 }
+		 //if (i==5043){
+			 //printf("here!\n");
+		 //}
 		 arrayB[k] = (film*) malloc(sizeof(film));
 		 array[i] = replace_NULL_w_empty(array[i]);
 		 arrayB[k] = replace_NULL_w_empty(arrayB[k]);
