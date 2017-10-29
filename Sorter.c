@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Sorter.h"
-
+#include <unistd.h>
 
 
 int main(int argc, char** argv){
@@ -78,6 +78,10 @@ int main(int argc, char** argv){
 	//vvv  set these to the default of current directory  vvv
 	char* src_dir;	//source directory
 	char* dest_dir;	//destination directory
+	src_dir=(char*)malloc(sizeof(char)*1024);
+	dest_dir=(char*)malloc(sizeof(char)*1024);
+	getcwd(src_dir,sizeof(src_dir);
+	getcwd(dest_dir,sizeof(dest_dir);
 	
 	if(strcmp("-d",argv[3])==0){
 			src_dir=argv[4];
