@@ -87,7 +87,7 @@ int main(int argc, char** argv){
 		if(argv[4]!=NULL){
 			src_dir=argv[4];
 		}else{
-				printf("ERROR: Missing source directory name\n");
+				printf("ERROR: Missing input directory name\n");
 				return 1;
 		}
 	}
@@ -95,7 +95,7 @@ int main(int argc, char** argv){
 		if(argv[4]!=NULL){
 			dest_dir=argv[4];
 		}else{
-			printf("ERROR: Missing destination directory name\n");
+			printf("ERROR: Missing output directory name\n");
 			return 1;
 		}
 	}
@@ -103,10 +103,28 @@ int main(int argc, char** argv){
 		if(argv[6]!=NULL){
 			dest_dir=argv[6];
 		}else{
-			printf("ERROR: Missing destination directory name\n");
+			printf("ERROR: Missing output directory name\n");
 			return 1;
 		}
 	}	
+	//check if directories are valid:
+	DIR* src_folder=opendir(src_dir);
+	if(src_folder){
+			closedir(src_folder);
+	}else{
+		printf("ERROR: Invalid input directory\n");
+		return 1;
+	}
+	
+	DIR* dest_folder=opendir(dest_dir);
+	if(dest_folder){
+			closedir(dest_folder);
+	}else{
+		printf("ERROR: Invalid output directory\n");
+		return 1;
+	}
+	
+	
 	
 /*	for new sorter:
 	DIR * dirp; //directory pointer
