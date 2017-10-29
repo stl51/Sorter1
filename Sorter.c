@@ -4,6 +4,7 @@
 #include "Sorter.h"
 #include <dirent.h>
 #include <unistd.h>
+#include <errno.h>
 
 
 int main(int argc, char** argv){
@@ -92,7 +93,7 @@ int main(int argc, char** argv){
 				return 1;
 		}
 	}
-	if(strcmp("-o",argv[3])==0){
+	else if(strcmp("-o",argv[3])==0){
 		if(argv[4]!=NULL){
 			dest_dir=argv[4];
 		}else{
