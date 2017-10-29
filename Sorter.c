@@ -75,6 +75,19 @@ int main(int argc, char** argv){
 		printf("ERROR: Invalid Category For Sorting\n");
 		return 1;
 	}
+	//vvv  set these to the default of current directory  vvv
+	char* src_dir;	//source directory
+	char* dest_dir;	//destination directory
+	
+	if(strcmp("-d",argv[3])==0){
+			src_dir=argv[4];
+	}
+	if(strcmp("-o",argv[3])==0){
+			dest_dir=argv[4];
+	}
+	if(strcmp("-o",argv[5])==0){
+			dest_dir=argv[6];
+	}	
 	
 /*	for new sorter:
 	DIR * dirp; //directory pointer
