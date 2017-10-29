@@ -47,4 +47,4 @@ void free_strings(film** array, int len);//free string pointers for each struct 
 film* filmcpy(film* filmA, film* filmB);//copy a film struct function
 film* replace_NULL_w_empty(film* f);//self explanitory
 char* strtok_fix (char* str, char const * delim);//a fix to strtok to include nulls
-FILE * sort_csv(FILE* file, int sortby);
+FILE * sort_csv(FILE* file, char* filename, int sortby);
