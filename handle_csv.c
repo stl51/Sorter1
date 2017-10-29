@@ -2,9 +2,8 @@
 #include "Sorter.h"
 #include <stdlib.h>
 #include <string.h>
-#include <dirent.h>
 
-FILE * sort_csv(FILE* file, int sortby, DIR* in_dir, DIR* out_dir) {
+FILE * sort_csv(FILE* file, char* filename, int sortby) {
 
 
 	int loop = 0;
@@ -258,7 +257,17 @@ FILE * sort_csv(FILE* file, int sortby, DIR* in_dir, DIR* out_dir) {
 	}//done reading file
 	array = mergesort(array, arrayloc, sortby);
 
+	printf("done!\n");
+
+	//make a new string for filename
+	//filenamenew = filename with "-sorted-<fieldname>" appended
+	//fieldname determined by switching on sortby
+
 	//make a new file and write to that file the sorted array
+
+	FILE* nfile = fopen("newfile.csv", "w");
+	return nfile;//for compilation
+	
 }
 
 char* strtok_fix(char* str, char const * delim) {
