@@ -98,7 +98,7 @@ int main(){
 	
 	
 	
-	test_array = mergesort(test_array, 3, 2);
+	test_array = mergesort(test_array, 3, 4);
 	
 	printf("done!\n");
 	
