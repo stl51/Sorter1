@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Sorter.h"
+#include <dirent.h>
 #include <unistd.h>
 
 
