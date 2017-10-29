@@ -84,13 +84,28 @@ int main(int argc, char** argv){
 	getcwd(dest_dir,sizeof(dest_dir);
 	
 	if(strcmp("-d",argv[3])==0){
+		if(argv[4]!=NULL){
 			src_dir=argv[4];
+		}else{
+				printf("ERROR: Missing source directory name\n");
+				return 1;
+		}
 	}
 	if(strcmp("-o",argv[3])==0){
+		if(argv[4]!=NULL){
 			dest_dir=argv[4];
+		}else{
+			printf("ERROR: Missing destination directory name\n");
+			return 1;
+		}
 	}
 	if(strcmp("-o",argv[5])==0){
+		if(argv[6]!=NULL){
 			dest_dir=argv[6];
+		}else{
+			printf("ERROR: Missing destination directory name\n");
+			return 1;
+		}
 	}	
 	
 /*	for new sorter:
