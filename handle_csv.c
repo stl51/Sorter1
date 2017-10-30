@@ -356,7 +356,7 @@ FILE * sort_csv(FILE* file, char* filename, int sortby) {
 
 	char* nfilename = (char*)malloc(sizeof(char) * 100);
 	memcpy(nfilename, filename, strlen(filename) - 4);
-	nfilename[strlen(filename) - 4] = 0;
+	nfilename[strlen(filename) - 4] = '\0';
 	//nfilename = strcpy(nfilename, filename);
 	nfilename = strcat(nfilename, "-sorted-");
 	nfilename = strcat(nfilename, sorttype);
