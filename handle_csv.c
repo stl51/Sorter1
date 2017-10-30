@@ -263,9 +263,108 @@ FILE * sort_csv(FILE* file, char* filename, int sortby) {
 	//filenamenew = filename with "-sorted-<fieldname>" appended
 	//fieldname determined by switching on sortby
 
+	char* sorttype;
+	switch (sortby)
+	{
+	case(1):
+		sorttype = "color";
+		break;
+	case(2):
+		sorttype = "director_name";
+		break;
+	case(3):
+		sorttype = "num_critic_for_reviews";
+		break;
+	case(4):
+		sorttype = "duration";
+		break;
+	case(5):
+		sorttype = "director_facebook_likes";
+		break;
+	case(6):
+		sorttype = "actor_3_facebook_likes";
+		break;
+	case(7):
+		sorttype = "actor_2_name";
+		break;
+	case(8):
+		sorttype = "actor_1_facebook_likes";
+		break;
+	case(9):
+		sorttype = "gross";
+		break;
+	case(10):
+		sorttype = "genres";
+		break;
+	case(11):
+		sorttype = "actor_1_name";
+		break;
+	case(12):
+		sorttype = "movie_title";
+		break;
+	case(13):
+		sorttype = "num_voted_users";
+		break;
+	case(14):
+		sorttype = "cast_total_facebook_likes";
+		break;
+	case(15):
+		sorttype = "actor_3_name";
+		break;
+	case(16):
+		sorttype = "facenumber_in_poster";
+		break;
+	case(17):
+		sorttype = "plot_keywords";
+		break;
+	case(18):
+		sorttype = "movie_imdb_link";
+		break;
+	case(19):
+		sorttype = "num_user_for_reviews";
+		break;
+	case(20):
+		sorttype = "language";
+		break;
+	case(21):
+		sorttype = "country";
+		break;
+	case(22):
+		sorttype = "content_rating";
+		break;
+	case(23):
+		sorttype = "budget";
+		break;
+	case(24):
+		sorttype = "title_year";
+		break;
+	case(25):
+		sorttype = "actor_2_facebook_likes";
+		break;
+	case(26):
+		sorttype = "imdb_score";
+		break;
+	case(27):
+		sorttype = "aspect_ratio";
+		break;
+	case(28):
+		sorttype = "movie_facebook_likes";
+		break;
+	default:
+		break;
+	}
+
+	char* nfilename = (char*)malloc(sizeof(char) * 100);
+	memcpy(nfilename, filename, strlen(filename) - 4);
+	nfilename[strlen(filename) - 4] = 0;
+	//nfilename = strcpy(nfilename, filename);
+	nfilename = strcat(nfilename, "-sorted-");
+	nfilename = strcat(nfilename, sorttype);
+	nfilename = strcat(nfilename, ".csv");
 	//make a new file and write to that file the sorted array
 
-	FILE* nfile = fopen("newfile.csv", "w");
+	FILE* nfile = fopen(nfilename, "w");
+
 	return nfile;//for compilation
 	
 }
