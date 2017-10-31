@@ -80,10 +80,13 @@ int main(int argc, char** argv){
 	//vvv  set these to the default of current directory  vvv
 	char* src_dir;	//source directory
 	char* dest_dir;	//destination directory
+	char* orig_dir; //starting directory
 	src_dir=(char*)malloc(sizeof(char)*1024);
 	dest_dir=(char*)malloc(sizeof(char)*1024);
+	orig_dir=(char*)malloc(sizeof(char)*1024);
 	getcwd(src_dir,sizeof(src_dir);
 	getcwd(dest_dir,sizeof(dest_dir);
+	getcwd(orig_dir,sizeof(orig_dir);
 	
 	if(strcmp("-d",argv[3])==0){
 		if(argv[4]!=NULL){
