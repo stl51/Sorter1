@@ -129,6 +129,10 @@ int main(int argc, char** argv){
 		return 1;
 	}
 	
+	//Ashy's variables are declared here
+
+
+
 	struct dirent* protag;	//protag is the file/directory in focus
 	while((protag=readdir(src_folder))!=NULL){
 			DIR* dir_check=opendir(protag->d_name);
@@ -136,6 +140,7 @@ int main(int argc, char** argv){
 					//protag is a folder, fork and handle
 			}else if(errno==ENOTDIR){
 					//protag is a file, fork and handle
+
 			}
 			
 		
