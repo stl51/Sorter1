@@ -142,6 +142,9 @@ int main(int argc, char** argv){
 	while((protag=readdir(src_folder))!=NULL){
 			DIR* dir_check=opendir(protag->d_name);
 			if(dir_check!=NULL){//dirfork(parameters); //protag is a folder, fork and handle
+					char* deuterag;
+					deuterag=(char*)malloc(sizeof(char)*512);
+					deuterag=protag->d_name;
 				//do the metadata computations done for file portion
 				//recursively call self
 				//total = spawns + "return value of self"
