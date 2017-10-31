@@ -126,8 +126,17 @@ int main(int argc, char** argv){
 		return 1;
 	}
 	
-	
-	
+	struct dirent* protag;	//protag is the file/directory in focus
+	while((protagonist=readdir(src_folder))!=NULL){
+			DIR* dir_check=opendir(protag->d_name);
+			if(dir_check!=NULL){
+					//protag is a folder, fork and handle
+			}else if(errno==ENOTDIR){
+					//protag is a file, fork and handle
+			}
+			
+		
+	}
 /*	for new sorter:
 	DIR * dirp; //directory pointer
 	set dirp to given char* dir_name
