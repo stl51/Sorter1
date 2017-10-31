@@ -128,24 +128,58 @@ int main(int argc, char** argv){
 		printf("ERROR: Invalid output directory\n");
 		return 1;
 	}
-	
-	//Ashy's variables are declared here
 
+	//Convert all lines from here to closedir into function (adding a return total)
+	//Ashy's variables are declared here
+	int spawns = 0; int total = 0;
+	pid_t * pids = (pid_t*)malloc(sizeof(pid_t) * 1);//array of all pids this process creates
+	int array_size = 1;
+	int status;
+	//REMEMBER TO ZERO OUT ALL VARIABLES YOU WANT TO START AT 0 FOR EACH PROCESS AFTER FORKING
 
 
 	struct dirent* protag;	//protag is the file/directory in focus
 	while((protag=readdir(src_folder))!=NULL){
 			DIR* dir_check=opendir(protag->d_name);
-			if(dir_check!=NULL){
-					//dirfork(parameters); //protag is a folder, fork and handle
-			}else if(errno==ENOTDIR){
-					//filefork(parameters); //protag is a file, fork and handle
-
+			if(dir_check!=NULL){//dirfork(parameters); //protag is a folder, fork and handle
+				//do the metadata computations done for file portion
+				//recursively call self
+				//total = spawns + "return value of self"
+				//return total;
+			}else if(errno==ENOTDIR){//filefork(parameters); //protag is a file, fork and handle
+				errno = 0;
+				spawns++;
+				if (spawns > array_size) {
+					array_size = array_size * 2;
+					pids = (pid_t*) realloc(pids, sizeof(pid_t)*array_size);
+				}
+				pids[spawns-1] = fork();
+				if (pids[spawns - 1] == 0) {//if child
+					spawns = 0;
+					total = 0;
+					memset(pids, 0, sizeof(pid_t)*array_size);
+					//create a string var for the filename
+					//create file ptr for the file to be processed
+					FILE* nfile = sort_csv(/*FILE* ptr*/,/*char* filename*/, sortby);
+					//place file in the proper location
+					return spawns;
+				}
 			}
 			
 		
 	}
+
+	while (i < spawns) {//wait for each child, adding up the total number of processes underneath them as they return
+		wait(&status);
+		total = total + status;
+		i++;
+	}
+	total = total + spawns;
+
+
 	closedir(src_folder);
+	//return total;
+
 /*	for new sorter:
 	DIR * dirp; //directory pointer
 	set dirp to given char* dir_name
