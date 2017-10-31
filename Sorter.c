@@ -159,8 +159,13 @@ int main(int argc, char** argv){
 					total = 0;
 					memset(pids, 0, sizeof(pid_t)*array_size);
 					//create a string var for the filename
+					char* antag;
+					antag=(char*)malloc(sizeof(char)*512);
+					antag=protag->d_name;
 					//create file ptr for the file to be processed
-					FILE* nfile = sort_csv(/*FILE* ptr*/,/*char* filename*/, sortby);
+					FILE* ofile=fopen(antag,"r");
+					
+					FILE* nfile = sort_csv(ofile,antag, sortby);
 					//place file in the proper location
 					return spawns;
 				}
