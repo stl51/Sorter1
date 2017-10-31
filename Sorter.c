@@ -140,6 +140,7 @@ int main(int argc, char** argv){
 			
 		
 	}
+	closedir(src_folder);
 /*	for new sorter:
 	DIR * dirp; //directory pointer
 	set dirp to given char* dir_name
