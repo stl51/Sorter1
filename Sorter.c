@@ -137,9 +137,9 @@ int main(int argc, char** argv){
 	while((protag=readdir(src_folder))!=NULL){
 			DIR* dir_check=opendir(protag->d_name);
 			if(dir_check!=NULL){
-					//protag is a folder, fork and handle
+					//dirfork(parameters); //protag is a folder, fork and handle
 			}else if(errno==ENOTDIR){
-					//protag is a file, fork and handle
+					//filefork(parameters); //protag is a file, fork and handle
 
 			}
 			
