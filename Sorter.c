@@ -130,7 +130,7 @@ int main(int argc, char** argv){
 	}
 	
 	struct dirent* protag;	//protag is the file/directory in focus
-	while((protagonist=readdir(src_folder))!=NULL){
+	while((protag=readdir(src_folder))!=NULL){
 			DIR* dir_check=opendir(protag->d_name);
 			if(dir_check!=NULL){
 					//protag is a folder, fork and handle
