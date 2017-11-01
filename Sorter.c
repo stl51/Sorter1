@@ -292,7 +292,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir,char* pathway) {
 				total = 0;
 				memset(pids, 0, sizeof(pid_t)*array_size);
 				procdir = opendir(deuterag);
-				res = run_thru(procdir, sortby, dest_dir);
+				res = run_thru(procdir, sortby, dest_dir,pathway);
 				total = spawns + res;
 				WEXITSTATUS(total);
 			}
