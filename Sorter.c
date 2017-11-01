@@ -246,7 +246,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 	while ((protag = readdir(folder)) != NULL) {
 		char swing[1024];
 		strcpy(swing, protag->d_name);
-		DIR* dir_check = opendir(protag->d_name);
+		DIR* dir_check = opendir(swing);
 		if (dir_check != NULL) {//dirfork(parameters); //protag is a folder, fork and handle
 			deuterag = (char*)malloc(sizeof(char) * 512);
 			deuterag = strcpy(deuterag, protag->d_name);
