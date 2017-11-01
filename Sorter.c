@@ -247,7 +247,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 		DIR* dir_check = opendir(protag->d_name);
 		if (dir_check != NULL) {//dirfork(parameters); //protag is a folder, fork and handle
 			deuterag = (char*)malloc(sizeof(char) * 512);
-			deuterag = protag->d_name;
+			deuterag = strcpy(deuterag, protag->d_name);
 			if (!strcmp(deuterag, ".") || !strcmp(deuterag,"..")) {
 				free(deuterag);
 				continue;
