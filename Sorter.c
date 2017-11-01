@@ -112,8 +112,8 @@ int main(int argc, char** argv) {
 	dest_dir = (char*)malloc(sizeof(char) * 1024);
 	orig_dir = (char*)malloc(sizeof(char) * 1024);
 	getcwd(src_dir, sizeof(src_dir));
-	getcwd(dest_dir, sizeof(dest_dir);
-	getcwd(orig_dir, sizeof(orig_dir);
+	getcwd(dest_dir, sizeof(dest_dir));
+	getcwd(orig_dir, sizeof(orig_dir));
 
 	if (strcmp("-d", argv[3]) == 0) {
 		if (argv[4] != NULL) {
