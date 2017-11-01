@@ -167,8 +167,9 @@ int main(int argc, char** argv){
 					antag=protag->d_name;
 					//create file ptr for the file to be processed
 					FILE* ofile=fopen(antag,"r");
-					
-					FILE* nfile = sort_csv(ofile,antag, sortby);
+					curr_dir=(char*)malloc(sizeof(char)*1024);
+					getcwd(curr_dir,sizeof(curr_dir);					
+					FILE* nfile = sort_csv(ofile,antag, sortby,curr_dir,dest_dir);
 					//place file in the proper location
 					return spawns;
 				}
