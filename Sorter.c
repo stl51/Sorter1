@@ -172,7 +172,14 @@ int main(int argc, char** argv) {
 
 	int total;
 	printf("Initial PID: %d\n", getpid());
-	total = run_thru(src_folder, sortby, dest_dir);
+	
+	char pathway[4096];
+	getcwd(pathway,sizeof(pathway));
+	strcat(pathway,"/");
+	strcat(pathway,src_dir);
+	
+	
+	total = run_thru(src_folder, sortby, dest_dir,pathway);
 	printf("\ntotal number of child processes: %d\n", total);
 
 
@@ -233,7 +240,7 @@ int main(int argc, char** argv) {
 }
 
 
-int run_thru(DIR* folder, int sortby, char* dest_dir) {
+int run_thru(DIR* folder, int sortby, char* dest_dir,char* pathway) {
 	//Convert all lines from here to closedir into function (adding a return total)
 	//Ashy's variables are declared here
 	printf("PIDS of all child processes: ");
@@ -251,11 +258,17 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 		strcpy(swing, protag->d_name);
 		DIR* dir_check = opendir(swing);
 		if(dir_check==NULL){
-			char transition[2048];
+		/*	char transition[2048];
 			getcwd(transition,sizeof(transition));
 			strcat(transition,"/");
 			strcat(transition,swing);
-			dir_check=opendir(transition);
+			dir_check=opendir(transition);*/
+			
+		//	char transition[2048];
+		//	getcwd(transition,sizeof(transition));
+			strcat(pathway,"/");
+			strcat(pathway,swing);
+			dir_check=opendir(pathway);
 		}
 		if (dir_check != NULL) {//dirfork(parameters); //protag is a folder, fork and handle
 			deuterag = (char*)malloc(sizeof(char) * 512);
