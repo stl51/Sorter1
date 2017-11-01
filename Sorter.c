@@ -250,6 +250,9 @@ int run_thru(DIR* folder, DIR* dest, int sortby) {
 			pids[spawns - 1] = fork();
 			//recursively call self
 			if (pids[spawns - 1] == 0) {//if child
+				spawns = 0;
+				total = 0;
+				memset(pids, 0, sizeof(pid_t)*array_size);
 				procdir = opendir(deuterag);
 				res = run_thru(procdir, dest, sortby);
 				total = spawns + res;
