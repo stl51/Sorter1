@@ -281,7 +281,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 				procdir = opendir(deuterag);
 				res = run_thru(procdir, sortby, dest_dir);
 				total = spawns + res;
-				return total;
+				exit total;
 			}
 			printf("%d,", pids[spawns - 1]);
 			wait(&status);
@@ -310,7 +310,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 				getcwd(curr_dir, sizeof(curr_dir));
 				FILE* nfile = sort_csv(ofile, antag, sortby, curr_dir, dest_dir);
 				//place file in the proper location
-				return spawns;
+				exit spawns;
 			}
 			printf("%d,", pids[spawns - 1]);
 			wait(&status);
