@@ -264,7 +264,7 @@ FILE * sort_csv(FILE* file, char* filename, int sortby, char* curr_dir, char* de
 	}//done reading file
 	array = mergesort(array, arrayloc, sortby);
 
-	printf("done!\n");
+	
 
 	//make a new string for filename
 	//filenamenew = filename with "-sorted-<fieldname>" appended
