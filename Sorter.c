@@ -288,10 +288,10 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 				//create a string var for the filename
 				char* antag;
 				antag = (char*)malloc(sizeof(char) * 512);
-				antag = protag->d_name;
+				antag = strcpy(antag, protag->d_name);
 				//create file ptr for the file to be processed
 				FILE* ofile = fopen(antag, "r");
-				char* curr_dir = (char*)malloc(sizeof(char) * 1024);
+				char curr_dir[4096];
 				getcwd(curr_dir, sizeof(curr_dir));
 				FILE* nfile = sort_csv(ofile, antag, sortby, curr_dir, dest_dir);
 				//place file in the proper location
