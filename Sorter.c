@@ -250,6 +250,13 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 		char swing[1024];
 		strcpy(swing, protag->d_name);
 		DIR* dir_check = opendir(swing);
+		if(dir_check==NULL){
+			char transition[2048];
+			getcwd(transition,sizeof(transition);
+			strcat(transition,"/");
+			strcat(transition,swing);
+			dir_check=opendir(transition);
+		}
 		if (dir_check != NULL) {//dirfork(parameters); //protag is a folder, fork and handle
 			deuterag = (char*)malloc(sizeof(char) * 512);
 			deuterag = strcpy(deuterag, protag->d_name);
