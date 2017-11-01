@@ -253,7 +253,8 @@ int run_thru(DIR* folder, int sortby, char* dest_dir,char* pathway) {
 
 
 	struct dirent* protag;	//protag is the file/directory in focus
-	while ((protag = readdir(folder)) != NULL) {
+	protag = readdir(folder);
+	while (protag != NULL) {
 		char swing[1024];
 		strcpy(swing, protag->d_name);
 		DIR* dir_check = opendir(swing);
@@ -274,7 +275,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir,char* pathway) {
 		//	deuterag = (char*)malloc(sizeof(char) * 512);
 	//		deuterag = strcpy(deuterag, protag->d_name);
 			if (!strcmp(swing, ".") || !strcmp(swing,"..")) {
-				
+				protag = readdir(folder);
 				continue;
 			}
 			//do the metadata computations done for file portion
@@ -293,14 +294,14 @@ int run_thru(DIR* folder, int sortby, char* dest_dir,char* pathway) {
 				memset(pids, 0, sizeof(pid_t)*array_size);
 			//	strcat(pathway,"/");
 			//	strcat(pathway,deuterag);
-				dir_check=opendir(pathway);
-				res = run_thru(procdir, sortby, dest_dir,pathway);
+			//	dir_check=opendir(pathway);
+				res = run_thru(dir_check, sortby, dest_dir,pathway);
 				total = spawns + res;
-				WEXITSTATUS(total);
+				exit(total);
 			}
 			printf("%d,", pids[spawns - 1]);
 			wait(&status);
-			total = status + total;
+			total = WEXITSTATUS(status) + total;
 		}
 		else /* if (errno == ENOTDIR)*/ {//filefork(parameters); //protag is a file, fork and handle
 			errno = 0;
@@ -316,23 +317,23 @@ int run_thru(DIR* folder, int sortby, char* dest_dir,char* pathway) {
 				total = 0;
 				memset(pids, 0, sizeof(pid_t)*array_size);
 				//create a string var for the filename
-				char* antag;
-				antag = (char*)malloc(sizeof(char) * 512);
-				antag = strcpy(antag, protag->d_name);
+				//char* antag;
+				//antag = (char*)malloc(sizeof(char) * 512);
+				//antag = strcpy(antag, protag->d_name);
 				//create file ptr for the file to be processed
-				FILE* ofile = fopen(antag, "r");
-				char curr_dir[4096];
-				getcwd(curr_dir, sizeof(curr_dir));
-				FILE* nfile = sort_csv(ofile, antag, sortby, curr_dir, dest_dir);
-				//place file in the proper location
-				WEXITSTATUS(spawns);
+				FILE* ofile = fopen(swing, "r");
+				//char curr_dir[4096];
+				//getcwd(curr_dir, sizeof(curr_dir));
+				sort_csv(ofile, swing, sortby, pathway, dest_dir);
+				
+				exit(spawns);
 			}
 			printf("%d,", pids[spawns - 1]);
 			wait(&status);
-			total = status + total;
+			total = WEXITSTATUS(status) + total;
 		}
 
-
+	protag = readdir(folder);
 	}
 
 	//while (i < spawns) {//wait for each child, adding up the total number of processes underneath them as they return
