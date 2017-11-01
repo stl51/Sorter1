@@ -162,7 +162,7 @@ int main(int argc, char** argv) {
 	}
 
 	int total;
-	total = run_thru(src_dir, dest_dir, sortby);
+	total = run_thru(src_folder, sortby, dest_dir);
 
 
 	////Convert all lines from here to closedir into function (adding a return total)
@@ -222,7 +222,7 @@ int main(int argc, char** argv) {
 }
 
 
-int run_thru(DIR* folder, DIR* dest, int sortby) {
+int run_thru(DIR* folder, int sortby, char* dest_dir) {
 	//Convert all lines from here to closedir into function (adding a return total)
 	//Ashy's variables are declared here
 	int spawns = 0; int total = 0;
