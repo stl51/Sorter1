@@ -7,6 +7,8 @@
 ******/
 
 //Suggestion: define a struct that mirrors a record (row) of the data set
+#include <dirent.h>
+#include <unistd.h>
 
 struct film{
 		char* color;
