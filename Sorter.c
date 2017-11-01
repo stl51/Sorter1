@@ -267,7 +267,8 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 				total = spawns + res;
 				return total;
 			}
-			wait();
+			wait(&status);
+			total = status + total;
 		}
 		else if (errno == ENOTDIR) {//filefork(parameters); //protag is a file, fork and handle
 			errno = 0;
@@ -293,7 +294,8 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 				//place file in the proper location
 				return spawns;
 			}
-			wait();
+			wait(&status);
+			total = status + total;
 		}
 
 
