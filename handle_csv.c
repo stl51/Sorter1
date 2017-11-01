@@ -2,6 +2,7 @@
 #include "Sorter.h"
 #include <stdlib.h>
 #include <string.h>
+#include <dirent.h>
 
 FILE * sort_csv(FILE* file, char* filename, int sortby, char* curr_dir, char* dest_dir) {
 

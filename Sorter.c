@@ -111,7 +111,7 @@ int main(int argc, char** argv) {
 	src_dir = (char*)malloc(sizeof(char) * 1024);
 	dest_dir = (char*)malloc(sizeof(char) * 1024);
 	orig_dir = (char*)malloc(sizeof(char) * 1024);
-	getcwd(src_dir, sizeof(src_dir);
+	getcwd(src_dir, sizeof(src_dir));
 	getcwd(dest_dir, sizeof(dest_dir);
 	getcwd(orig_dir, sizeof(orig_dir);
 
