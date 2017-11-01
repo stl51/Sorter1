@@ -173,7 +173,7 @@ int main(int argc, char** argv) {
 	int total;
 	printf("Initial PID: %d\n", getpid());
 	total = run_thru(src_folder, sortby, dest_dir);
-	printf("\ntotal number of child processes: %d", total);
+	printf("\ntotal number of child processes: %d\n", total);
 
 
 	////Convert all lines from here to closedir into function (adding a return total)
