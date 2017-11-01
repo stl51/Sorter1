@@ -279,7 +279,7 @@ int run_thru(DIR* folder, DIR* dest, int sortby) {
 				FILE* ofile = fopen(antag, "r");
 				char* curr_dir = (char*)malloc(sizeof(char) * 1024);
 				getcwd(curr_dir, sizeof(curr_dir));
-				FILE* nfile = sort_csv(ofile, antag, sortby, curr_dir, dest);
+				FILE* nfile = sort_csv(ofile, antag, sortby, curr_dir, dest_dir);
 				//place file in the proper location
 				return spawns;
 			}
