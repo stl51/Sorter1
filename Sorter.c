@@ -271,10 +271,10 @@ int run_thru(DIR* folder, int sortby, char* dest_dir,char* pathway) {
 			dir_check=opendir(pathway);
 		}
 		if (dir_check != NULL) {//dirfork(parameters); //protag is a folder, fork and handle
-			deuterag = (char*)malloc(sizeof(char) * 512);
-			deuterag = strcpy(deuterag, protag->d_name);
-			if (!strcmp(deuterag, ".") || !strcmp(deuterag,"..")) {
-				free(deuterag);
+		//	deuterag = (char*)malloc(sizeof(char) * 512);
+	//		deuterag = strcpy(deuterag, protag->d_name);
+			if (!strcmp(swing, ".") || !strcmp(swing,"..")) {
+				
 				continue;
 			}
 			//do the metadata computations done for file portion
@@ -291,8 +291,8 @@ int run_thru(DIR* folder, int sortby, char* dest_dir,char* pathway) {
 				spawns = 0;
 				total = 0;
 				memset(pids, 0, sizeof(pid_t)*array_size);
-				strcat(pathway,"/");
-				strcat(pathway,deuterag);
+			//	strcat(pathway,"/");
+			//	strcat(pathway,deuterag);
 				dir_check=opendir(pathway);
 				res = run_thru(procdir, sortby, dest_dir,pathway);
 				total = spawns + res;
