@@ -267,7 +267,11 @@ int run_thru(DIR* folder, int sortby, char* dest_dir,char* pathway) {
 			
 		//	char transition[2048];
 		//	getcwd(transition,sizeof(transition));
-			strcat(pathway,"/");
+		//	
+			if(pathway[strlen(pathway)-1] != '/'){
+				strcat(pathway,"/");
+			}
+			//strcat(pathway,"/");
 			strcat(pathway,swing);
 			dir_check=opendir(pathway);
 		}
@@ -295,6 +299,9 @@ int run_thru(DIR* folder, int sortby, char* dest_dir,char* pathway) {
 			//	strcat(pathway,"/");
 			//	strcat(pathway,deuterag);
 			//	dir_check=opendir(pathway);
+
+
+
 				res = run_thru(dir_check, sortby, dest_dir,pathway);
 				total = spawns + res;
 				exit(total);
@@ -312,6 +319,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir,char* pathway) {
 			}
 			pids[spawns - 1] = fork();
 			if (pids[spawns - 1] == 0) {//if child
+				errno = 0;
 				printf("Initial PID: %d\n", getpid());
 				spawns = 0;
 				total = 0;
@@ -321,10 +329,14 @@ int run_thru(DIR* folder, int sortby, char* dest_dir,char* pathway) {
 				//antag = (char*)malloc(sizeof(char) * 512);
 				//antag = strcpy(antag, protag->d_name);
 				//create file ptr for the file to be processed
-				FILE* ofile = fopen(swing, "r");
+				FILE* ofile = fopen(pathway, "r");
 				//char curr_dir[4096];
 				//getcwd(curr_dir, sizeof(curr_dir));
-				sort_csv(ofile, swing, sortby, pathway, dest_dir);
+				char* dir_path = (char*) malloc(sizeof(char)*4096);
+                                dir_path = (char*) memcpy(dir_path, pathway, sizeof(char)*(strlen(pathway)-strlen(swing)));
+                                dir_path[strlen(pathway)-strlen(swing)] = '\0';
+
+				sort_csv(ofile, swing, sortby, dir_path, dest_dir);
 				
 				exit(spawns);
 			}
@@ -332,7 +344,10 @@ int run_thru(DIR* folder, int sortby, char* dest_dir,char* pathway) {
 			wait(&status);
 			total = WEXITSTATUS(status) + total;
 		}
-
+	//char* dir_path = (char*) malloc(sizeof(char)*4096);
+        //pathway = (char*) memcpy(pathway, pathway, sizeof(char)*(strlen(pathway)-strlen(swing)));
+        pathway[strlen(pathway)-strlen(swing)] = '\0';
+	
 	protag = readdir(folder);
 	}
 
