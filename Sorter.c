@@ -252,7 +252,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 		DIR* dir_check = opendir(swing);
 		if(dir_check==NULL){
 			char transition[2048];
-			getcwd(transition,sizeof(transition);
+			getcwd(transition,sizeof(transition));
 			strcat(transition,"/");
 			strcat(transition,swing);
 			dir_check=opendir(transition);
