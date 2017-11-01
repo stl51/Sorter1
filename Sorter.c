@@ -109,12 +109,12 @@ int main(int argc, char** argv) {
 	char* src_dir;	//source directory
 	char* dest_dir;	//destination directory
 	char* orig_dir; //starting directory
-	src_dir = (char*)malloc(sizeof(char) * 2048);
-	dest_dir = (char*)malloc(sizeof(char) * 2048);
-	orig_dir = (char*)malloc(sizeof(char) * 2048);
-	src_dir = getcwd(src_dir, sizeof(src_dir));
-	dest_dir = getcwd(dest_dir, sizeof(dest_dir));
-	orig_dir = getcwd(orig_dir, sizeof(orig_dir));
+	src_dir = (char*)malloc(sizeof(char) * 4096);
+	dest_dir = (char*)malloc(sizeof(char) * 4096);
+	orig_dir = (char*)malloc(sizeof(char) * 4096);
+	getcwd(src_dir, sizeof(src_dir));
+	getcwd(dest_dir, sizeof(dest_dir));
+	getcwd(orig_dir, sizeof(orig_dir));
 	if((argc==6)||(argc==8)){
 			printf("ERROR: Incorrect number of arguments\n");
 			return 1;
