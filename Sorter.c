@@ -123,7 +123,7 @@ int main(int argc, char** argv) {
 	
 			if (strcmp("-d", argv[3]) == 0) {
 				if (argv[4] != NULL) {
-					src_dir = strcpy(src_dir, argv[4]);
+					strcpy(src_dir, argv[4]);
 				}
 				else {
 					printf("ERROR: Missing input directory name\n");
@@ -132,7 +132,7 @@ int main(int argc, char** argv) {
 			}
 			else if (strcmp("-o", argv[3]) == 0) {
 				if (argv[4] != NULL) {
-					dest_dir = strcat(dest_dir, argv[4]);
+					strcat(dest_dir, argv[4]);
 				}
 				else {
 					printf("ERROR: Missing output directory name\n");
@@ -143,7 +143,7 @@ int main(int argc, char** argv) {
 	if(argc==7)	{
 		if (strcmp("-o", argv[5]) == 0) {
 			if (argv[6] != NULL) {
-				dest_dir = strcpy(dest_dir, argv[6]);
+				strcpy(dest_dir, argv[6]);
 			}
 			else {
 				printf("ERROR: Missing output directory name\n");
