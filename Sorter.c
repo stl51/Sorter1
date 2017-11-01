@@ -287,7 +287,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 			wait(&status);
 			total = status + total;
 		}
-		else if (errno == ENOTDIR) {//filefork(parameters); //protag is a file, fork and handle
+		else /* if (errno == ENOTDIR)*/ {//filefork(parameters); //protag is a file, fork and handle
 			errno = 0;
 			spawns++;
 			if (spawns > array_size) {
