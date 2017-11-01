@@ -115,32 +115,40 @@ int main(int argc, char** argv) {
 	getcwd(src_dir, sizeof(src_dir));
 	getcwd(dest_dir, sizeof(dest_dir));
 	getcwd(orig_dir, sizeof(orig_dir));
-
-	if (strcmp("-d", argv[3]) == 0) {
-		if (argv[4] != NULL) {
-			src_dir = argv[4];
-		}
-		else {
-			printf("ERROR: Missing input directory name\n");
+	if((argc==6)||(argc==8)){
+			printf("ERROR: Incorrect number of arguments\n");
 			return 1;
-		}
 	}
-	else if (strcmp("-o", argv[3]) == 0) {
-		if (argv[4] != NULL) {
-			dest_dir = argv[4];
-		}
-		else {
-			printf("ERROR: Missing output directory name\n");
-			return 1;
-		}
+	if(argc==5){
+	
+			if (strcmp("-d", argv[3]) == 0) {
+				if (argv[4] != NULL) {
+					src_dir = argv[4];
+				}
+				else {
+					printf("ERROR: Missing input directory name\n");
+					return 1;
+				}
+			}
+			else if (strcmp("-o", argv[3]) == 0) {
+				if (argv[4] != NULL) {
+					dest_dir = argv[4];
+				}
+				else {
+					printf("ERROR: Missing output directory name\n");
+					return 1;
+				}
+			}
 	}
-	if (strcmp("-o", argv[5]) == 0) {
-		if (argv[6] != NULL) {
-			dest_dir = argv[6];
-		}
-		else {
-			printf("ERROR: Missing output directory name\n");
-			return 1;
+	if(argc==7)	{
+		if (strcmp("-o", argv[5]) == 0) {
+			if (argv[6] != NULL) {
+				dest_dir = argv[6];
+			}
+			else {
+				printf("ERROR: Missing output directory name\n");
+				return 1;
+			}
 		}
 	}
 	//check if directories are valid:
