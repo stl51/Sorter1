@@ -249,6 +249,9 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 			char* deuterag;
 			deuterag = (char*)malloc(sizeof(char) * 512);
 			deuterag = protag->d_name;
+			if (!strcmp(deuterag, ".")) {
+				continue;
+			}
 			//do the metadata computations done for file portion
 			errno = 0;
 			spawns++;
