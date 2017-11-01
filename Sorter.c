@@ -238,7 +238,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 	pid_t * pids = (pid_t*)malloc(sizeof(pid_t) * 1);//array of all pids this process creates
 	int array_size = 1;
 	int status; int res; int i;
-	DIR* procdir;
+	DIR* procdir; char* deuterag;
 	//REMEMBER TO ZERO OUT ALL VARIABLES YOU WANT TO START AT 0 FOR EACH PROCESS AFTER FORKING
 
 
@@ -246,11 +246,10 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 	while ((protag = readdir(folder)) != NULL) {
 		DIR* dir_check = opendir(protag->d_name);
 		if (dir_check != NULL) {//dirfork(parameters); //protag is a folder, fork and handle
-			char* deuterag;
 			deuterag = (char*)malloc(sizeof(char) * 512);
 			deuterag = protag->d_name;
 			if (!strcmp(deuterag, ".") || !strcmp(deuterag,"..")) {
-				free deuterag;
+				free(deuterag);
 				continue;
 			}
 			//do the metadata computations done for file portion
