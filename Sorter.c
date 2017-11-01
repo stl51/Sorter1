@@ -171,7 +171,9 @@ int main(int argc, char** argv) {
 	}
 
 	int total;
+	printf("Initial PID: %d\n", getpid());
 	total = run_thru(src_folder, sortby, dest_dir);
+	printf("\ntotal number of child processes: %d", total);
 
 
 	////Convert all lines from here to closedir into function (adding a return total)
@@ -234,6 +236,7 @@ int main(int argc, char** argv) {
 int run_thru(DIR* folder, int sortby, char* dest_dir) {
 	//Convert all lines from here to closedir into function (adding a return total)
 	//Ashy's variables are declared here
+	printf("PIDS of all child processes: ");
 	int spawns = 0; int total = 0;
 	pid_t * pids = (pid_t*)malloc(sizeof(pid_t) * 1);//array of all pids this process creates
 	int array_size = 1;
@@ -264,6 +267,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 			pids[spawns - 1] = fork();
 			//recursively call self
 			if (pids[spawns - 1] == 0) {//if child
+				printf("Initial PID: %d\n", getpid());
 				spawns = 0;
 				total = 0;
 				memset(pids, 0, sizeof(pid_t)*array_size);
@@ -272,6 +276,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 				total = spawns + res;
 				return total;
 			}
+			printf("%d,", pids[spawns - 1]);
 			wait(&status);
 			total = status + total;
 		}
@@ -284,6 +289,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 			}
 			pids[spawns - 1] = fork();
 			if (pids[spawns - 1] == 0) {//if child
+				printf("Initial PID: %d\n", getpid());
 				spawns = 0;
 				total = 0;
 				memset(pids, 0, sizeof(pid_t)*array_size);
@@ -299,6 +305,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 				//place file in the proper location
 				return spawns;
 			}
+			printf("%d,", pids[spawns - 1]);
 			wait(&status);
 			total = status + total;
 		}
@@ -312,7 +319,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 	//	i++;
 	//}
 	total = total + spawns;
-
+	printf("\ntotal number of child processes: %d", total);
 
 	closedir(folder);
 	return total;
