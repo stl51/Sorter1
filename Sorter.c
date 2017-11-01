@@ -106,9 +106,9 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 	//vvv  set these to the default of current directory  vvv
-	char* src_dir[4096];	//source directory
-	char* dest_dir[4096];	//destination directory
-	char* orig_dir[4096]; //starting directory
+	char src_dir[4096];	//source directory
+	char dest_dir[4096];	//destination directory
+	char orig_dir[4096]; //starting directory
 	/*src_dir = (char*)malloc(sizeof(char) * 4096);
 	dest_dir = (char*)malloc(sizeof(char) * 4096);
 	orig_dir = (char*)malloc(sizeof(char) * 4096);*/
