@@ -319,7 +319,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir) {
 	//	i++;
 	//}
 	total = total + spawns;
-	printf("\ntotal number of child processes: %d", total);
+	printf("\ntotal number of child processes: %d\n", total);
 
 	closedir(folder);
 	return total;
