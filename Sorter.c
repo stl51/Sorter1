@@ -228,7 +228,7 @@ int run_thru(DIR* folder, DIR* dest, int sortby) {
 	int spawns = 0; int total = 0;
 	pid_t * pids = (pid_t*)malloc(sizeof(pid_t) * 1);//array of all pids this process creates
 	int array_size = 1;
-	int status; int res;
+	int status; int res; int i;
 	DIR* procdir;
 	//REMEMBER TO ZERO OUT ALL VARIABLES YOU WANT TO START AT 0 FOR EACH PROCESS AFTER FORKING
 
@@ -277,8 +277,8 @@ int run_thru(DIR* folder, DIR* dest, int sortby) {
 				antag = protag->d_name;
 				//create file ptr for the file to be processed
 				FILE* ofile = fopen(antag, "r");
-				curr_dir = (char*)malloc(sizeof(char) * 1024);
-				getcwd(curr_dir, sizeof(curr_dir);
+				char* curr_dir = (char*)malloc(sizeof(char) * 1024);
+				getcwd(curr_dir, sizeof(curr_dir));
 				FILE* nfile = sort_csv(ofile, antag, sortby, curr_dir, dest_dir);
 				//place file in the proper location
 				return spawns;
