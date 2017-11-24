@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Sorter.h"
+#include "Sorter_thread.h"
 
 int main(){
 	film** test_array = (film**) malloc(sizeof(film*)*3);
