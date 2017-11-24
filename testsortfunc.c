@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "Sorter.h"
+#include "Sorter_thread.h"
 
 int main() {
 	char * filename = "short_movie.csv"; //add filename here
