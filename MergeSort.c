@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Sorter.h"
+#include "Sorter_thread.h"
 #include <string.h>
 
 film** mergesort(film** array, int size, int col){//pointer to unsorted array, size of array, column to sort by
