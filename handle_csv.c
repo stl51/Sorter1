@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "Sorter.h"
+#include "Sorter_thread.h"
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
