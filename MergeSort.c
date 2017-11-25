@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "Sorter_thread.h"
 #include <string.h>
+#include <pthread.h>
 
 film** mergesort(film** array, int size, int col){//pointer to unsorted array, size of array, column to sort by
 	if(size == 1){
