@@ -248,8 +248,8 @@ int run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 	int spawns = 0; int total = 0;
 	pid_t * pids = (pid_t*)malloc(sizeof(pid_t) * 1);//array of all pids this process creates
 	int array_size = 1;
-	int status; int res; int i;
-	DIR* procdir; char* deuterag;
+	int status; int res;
+	//DIR* procdir; char* deuterag;
 
 
 	struct dirent* protag;	//protag is the file/directory in focus
@@ -290,9 +290,9 @@ int run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 				total = spawns + res;
 				exit(total);
 			}
-			printf("%d,", pids[spawns - 1]);
-			wait(&status);
-			total = WEXITSTATUS(status) + total;
+			//printf("%d,", pids[spawns - 1]);
+			//wait(&status);
+			//total = WEXITSTATUS(status) + total;
 		}
 		else /* if (errno == ENOTDIR)*/ {//filefork(parameters); //protag is a file, fork and handle
 			errno = 0;
@@ -304,7 +304,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 			pids[spawns - 1] = fork();
 			if (pids[spawns - 1] == 0) {//if child
 				errno = 0;
-				printf("Initial PID: %d\n", getpid());
+				//printf("Initial PID: %d\n", getpid());
 				spawns = 0;
 				total = 0;
 				memset(pids, 0, sizeof(pid_t)*array_size);
@@ -319,20 +319,20 @@ int run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 				
 				exit(spawns);
 			}
-			printf("%d,", pids[spawns - 1]);
-			wait(&status);
-			total = WEXITSTATUS(status) + total;
+			//printf("%d,", pids[spawns - 1]);
+			//wait(&status);
+			//total = WEXITSTATUS(status) + total;
 		}
         pathway[strlen(pathway)-strlen(swing)] = '\0';
-	
-	protag = readdir(folder);
+	    protag = readdir(folder);
 	}
-
-	//while (i < spawns) {//wait for each child, adding up the total number of processes underneath them as they return
-	//	wait(&status);
-	//	total = total + status;
-	//	i++;
-	//}
+    
+    int i = 0;
+	while (i < spawns) {//wait for each child, adding up the total number of processes underneath them as they return
+		wait(&status);
+		total = total + status;
+		i++;
+	}
 	total = total + spawns;
 	printf("\ntotal number of child processes: %d\n", total);
 
