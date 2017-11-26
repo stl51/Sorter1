@@ -330,7 +330,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
     int i = 0;
 	while (i < spawns) {//wait for each child, adding up the total number of processes underneath them as they return
 		wait(&status);
-		total = total + status;
+		total = total + WEXITSTATUS(status);
 		i++;
 	}
 	total = total + spawns;
