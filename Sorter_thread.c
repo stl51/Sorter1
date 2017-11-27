@@ -180,76 +180,21 @@ int main(int argc, char** argv) {
 	strcat(pathway,src_dir);
 	
 	
-	total = run_thru(src_folder, sortby, dest_dir,pathway);
-	printf("\ntotal number of child processes: %d\n", total);
+	run_thru(src_folder, sortby, dest_dir,pathway);
+	//printf("\ntotal number of child processes: %d\n", total);
 
-
-	////Convert all lines from here to closedir into function (adding a return total)
-	////Ashy's variables are declared here
-	//int spawns = 0; int total = 0;
-	//pid_t * pids = (pid_t*)malloc(sizeof(pid_t) * 1);//array of all pids this process creates
-	//int array_size = 1;
-	//int status;
-	////REMEMBER TO ZERO OUT ALL VARIABLES YOU WANT TO START AT 0 FOR EACH PROCESS AFTER FORKING
-	//struct dirent* protag;	//protag is the file/directory in focus
-	//while ((protag = readdir(src_folder)) != NULL) {
-	//	DIR* dir_check = opendir(protag->d_name);
-	//	if (dir_check != NULL) {//dirfork(parameters); //protag is a folder, fork and handle
-	//		char* deuterag;
-	//		deuterag = (char*)malloc(sizeof(char) * 512);
-	//		deuterag = protag->d_name;
-	//		//do the metadata computations done for file portion
-	//		//recursively call self
-	//		//total = spawns + "return value of self"
-	//		//return total;
-	//	}
-	//	else if (errno == ENOTDIR) {//filefork(parameters); //protag is a file, fork and handle
-	//		errno = 0;
-	//		spawns++;
-	//		if (spawns > array_size) {
-	//			array_size = array_size * 2;
-	//			pids = (pid_t*)realloc(pids, sizeof(pid_t)*array_size);
-	//		}
-	//		pids[spawns - 1] = fork();
-	//		if (pids[spawns - 1] == 0) {//if child
-	//			spawns = 0;
-	//			total = 0;
-	//			memset(pids, 0, sizeof(pid_t)*array_size);
-	//			//create a string var for the filename
-	//			char* antag;
-	//			antag = (char*)malloc(sizeof(char) * 512);
-	//			antag = protag->d_name;
-	//			//create file ptr for the file to be processed
-	//			FILE* ofile = fopen(antag, "r");
-	//			curr_dir = (char*)malloc(sizeof(char) * 1024);
-	//			getcwd(curr_dir, sizeof(curr_dir);
-	//			FILE* nfile = sort_csv(ofile, antag, sortby, curr_dir, dest_dir);
-	//			//place file in the proper location
-	//			return spawns;
-	//		}
-	//	}
-	//}
-	//while (i < spawns) {//wait for each child, adding up the total number of processes underneath them as they return
-	//	wait(&status);
-	//	total = total + status;
-	//	i++;
-	//}
-	//total = total + spawns;
-	//closedir(src_folder);
-	////return total;
 	return 0;
 }
 
 
-int run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
+film** run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 	
 	//printf("PIDS of all child processes: ");
 
 	int spawns = 0; int total = 0;
-	pid_t * pids = (pid_t*)malloc(sizeof(pid_t) * 1);//array of all pids this process creates
+	pthread_t * tids = (pthread_t*)malloc(sizeof(pthread_t) * 1);//array of all threads this thread creates
 	int array_size = 1;
 	int status; int res;
-	//DIR* procdir; char* deuterag;
 
 
 	struct dirent* protag;	//protag is the file/directory in focus
@@ -257,6 +202,8 @@ int run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 	while (protag != NULL) {
 		char swing[1024];
 		strcpy(swing, protag->d_name);
+		protag = readdir(folder);
+		//lock above
 		DIR* dir_check = opendir(swing);
 		if(dir_check==NULL){
 			if(pathway[strlen(pathway)-1] != '/'){
@@ -268,67 +215,539 @@ int run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 		if (dir_check != NULL) { 
 			//protag is a folder, fork and handle
 			if (!strcmp(swing, ".") || !strcmp(swing,"..")) {
-				protag = readdir(folder);
 				continue;
 			}
-			errno = 0;
 			spawns++;
 			if (spawns > array_size) {
 				array_size = array_size * 2;
-				pids = (pid_t*)realloc(pids, sizeof(pid_t)*array_size);
+				tids = (pthread_t*)realloc(tids, sizeof(pthread_t)*array_size);
 			}
-			pids[spawns - 1] = fork();
-			if (pids[spawns - 1] == 0) {//if child
-				//printf("Initial PID: %d\n", getpid());
-				spawns = 0;
-				total = 0;
-				memset(pids, 0, sizeof(pid_t)*array_size);
-				
-				res = run_thru(dir_check, sortby, dest_dir,pathway);
-				total = spawns + res;
-				exit(total);
-			}
+			pthread_create(tids[spawns - 1], 0, run_thru, dir_check, sortby, dest_dir, pathway);
+			
         }
 		else {
             //protag is a file, fork and handle
-			//errno = 0;//may not use or need this
 			spawns++;
 			if (spawns > array_size) {
 				array_size = array_size * 2;
-				pids = (pid_t*)realloc(pids, sizeof(pid_t)*array_size);
+				tids = (pthread_t*)realloc(tids, sizeof(pthread_t)*array_size);
 			}
-			pids[spawns - 1] = fork();
-			if (pids[spawns - 1] == 0) {//if child
-				//errno = 0;
-				//printf("Initial PID: %d\n", getpid());
-				spawns = 0;
-				total = 0;
-				memset(pids, 0, sizeof(pid_t)*array_size);
-				
-				//FILE* ofile = fopen(pathway, "r");
-				
-				//char* dir_path = (char*) malloc(sizeof(char)*4096);
-                //dir_path = (char*) memcpy(dir_path, pathway, sizeof(char)*(strlen(pathway)-strlen(swing)));
-                //dir_path[strlen(pathway)-strlen(swing)] = '\0';
+			FILE* ofile = fopen(pathway, "r");
 
-				sort_csv(ofile, swing, sortby, dir_path, dest_dir);
-				
-				exit(spawns);
-			}
+			char* dir_path = (char*)malloc(sizeof(char) * 4096);
+			dir_path = (char*)memcpy(dir_path, pathway, sizeof(char)*(strlen(pathway) - strlen(swing)));
+			dir_path[strlen(pathway) - strlen(swing)] = '\0';
+
+			pthread_create(tids[spawns - 1], 0, sort_csv, ofile, sortby, dir_path);
+			
 		}
         pathway[strlen(pathway)-strlen(swing)] = '\0';
-	    protag = readdir(folder);
 	}
     
     int i = 0;
-	while (i < spawns) {//wait for each child, adding up the total number of processes underneath them as they return
-		wait(&status);
-		total = total + WEXITSTATUS(status);
+	film** a = (film**)malloc(sizeof(film*));
+	while (i < spawns) {
+		pthread_join(tids[i], status);//status needs to be a void *, then casted into a film** to be merged
+
+		//add function that contains merge_sorted here
+
+		//total = total + WEXITSTATUS(status);
 		i++;
 	}
 	total = total + spawns;
-	printf("\ntotal number of child processes: %d\n", total);
+	//printf("\ntotal number of child processes: %d\n", total);
 
 	closedir(folder);
-	return total;
+	return a;
+}
+
+film** merge_sorted(film** array, film** arrayA, film** arrayB, int mid, int k, int col) {//returns a new sorted array. Please modify so it returns a struct that also contains the size of the array (mid+k)
+	//array = already created but empty array to place films into, mid = sizeof A, k = sizeof B, col = sortby
+	int i = 0; int j = 0; int a = 0;
+	while (i<mid && j<k) {
+		//depending on what column we're sorting by, do things
+		if (col == 1 || col == 2 || col == 7 || col == 10 || col == 11 || col == 12 || col == 15 || col == 17 || col == 18 || col == 20 || col == 21 || col == 22) {
+			//sort by string, first being NULL
+			switch (col) {
+			case(1): {//color
+				if (arrayA[i]->color == NULL) {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+				else if (arrayB[j]->color == NULL) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				if (strcmp(arrayA[i]->color, arrayB[j]->color) > 0) {//arrayA's val is greater
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {//arrayA's val is less or equal
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(2): {//director_name//
+				if (arrayA[i]->director_name == NULL) {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+				else if (arrayB[j]->director_name == NULL) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				if (strcmp(arrayA[i]->director_name, arrayB[j]->director_name) > 0) {//arrayA's val is greater
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {//arrayA's val is less or equal
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(7): {//actor_2_name
+				if (arrayA[i]->actor_2_name == NULL) {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+				else if (arrayB[j]->actor_2_name == NULL) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				if (strcmp(arrayA[i]->actor_2_name, arrayB[j]->actor_2_name) > 0) {//arrayA's val is greater
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {//arrayA's val is less or equal
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(10): {//genres
+				if (arrayA[i]->genres == NULL) {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+				else if (arrayB[j]->genres == NULL) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				if (strcmp(arrayA[i]->genres, arrayB[j]->genres) > 0) {//arrayA's val is greater
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {//arrayA's val is less or equal
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(11): {//actor_1_name
+				if (arrayA[i]->actor_1_name == NULL) {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+				else if (arrayB[j]->actor_1_name == NULL) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				if (strcmp(arrayA[i]->actor_1_name, arrayB[j]->actor_1_name) > 0) {//arrayA's val is greater
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {//arrayA's val is less or equal
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(12): {//movie_title
+				if (arrayA[i]->movie_title == NULL) {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+				else if (arrayB[j]->movie_title == NULL) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				if (strcmp(arrayA[i]->movie_title, arrayB[j]->movie_title) > 0) {//arrayA's val is greater
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {//arrayA's val is less or equal
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(15): {//actor_3_name
+				if (arrayA[i]->actor_3_name == NULL) {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+				else if (arrayB[j]->actor_3_name == NULL) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				if (strcmp(arrayA[i]->actor_3_name, arrayB[j]->actor_3_name) > 0) {//arrayA's val is greater
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {//arrayA's val is less or equal
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(17): {//plot_keywords
+				if (arrayA[i]->plot_keywords == NULL) {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+				else if (arrayB[j]->plot_keywords == NULL) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				if (strcmp(arrayA[i]->plot_keywords, arrayB[j]->plot_keywords) > 0) {//arrayA's val is greater
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {//arrayA's val is less or equal
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(18): {//move_imdb_link
+				if (arrayA[i]->movie_imdb_link == NULL) {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+				else if (arrayB[j]->movie_imdb_link == NULL) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				if (strcmp(arrayA[i]->movie_imdb_link, arrayB[j]->movie_imdb_link) > 0) {//arrayA's val is greater
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {//arrayA's val is less or equal
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(20): {//language
+				if (arrayA[i]->language == NULL) {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+				else if (arrayB[j]->language == NULL) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				if (strcmp(arrayA[i]->language, arrayB[j]->language) > 0) {//arrayA's val is greater
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {//arrayA's val is less or equal
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(21): {//country
+				if (arrayA[i]->country == NULL) {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+				else if (arrayB[j]->country == NULL) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				if (strcmp(arrayA[i]->country, arrayB[j]->country) > 0) {//arrayA's val is greater
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {//arrayA's val is less or equal
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(22): {//content_rating
+				if (arrayA[i]->content_rating == NULL) {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+				else if (arrayB[j]->content_rating == NULL) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				if (strcmp(arrayA[i]->content_rating, arrayB[j]->content_rating) > 0) {//arrayA's val is greater
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {//arrayA's val is less or equal
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			}
+		}
+		else {
+			switch (col) {
+			case(3): {//num_critic_for_reviews
+				if (arrayA[i]->num_critic_for_reviews > arrayB[j]->num_critic_for_reviews) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(4): {//duration
+				if (arrayA[i]->duration > arrayB[j]->duration) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(5): {//director_facebook_likes
+				if (arrayA[i]->director_facebook_likes > arrayB[j]->director_facebook_likes) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(6): {//actor_3_facebook_likes
+				if (arrayA[i]->actor_3_facebook_likes > arrayB[j]->actor_3_facebook_likes) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(8): {//actor_1_facebook_likes
+				if (arrayA[i]->actor_1_facebook_likes > arrayB[j]->actor_1_facebook_likes) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(9): {//gross
+				if (arrayA[i]->gross > arrayB[j]->gross) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(13): {//num_voted_users
+				if (arrayA[i]->num_voted_users > arrayB[j]->num_voted_users) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(14): {//cast_total_facebook_likes
+				if (arrayA[i]->cast_total_facebook_likes > arrayB[j]->cast_total_facebook_likes) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(16): {//facenumber_in_poster
+				if (arrayA[i]->facenumber_in_poster > arrayB[j]->facenumber_in_poster) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(19): {//num_user_for_reviews
+				if (arrayA[i]->num_user_for_reviews > arrayB[j]->num_user_for_reviews) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(23): {//budget
+				if (arrayA[i]->budget > arrayB[j]->budget) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(24): {//title_year
+				if (arrayA[i]->title_year > arrayB[j]->title_year) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(25): {//actor_2_facebook_likes
+				if (arrayA[i]->actor_2_facebook_likes > arrayB[j]->actor_2_facebook_likes) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(26): {//imdb_score
+				if (arrayA[i]->imdb_score > arrayB[j]->imdb_score) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(27): {//aspect_ratio
+				if (arrayA[i]->aspect_ratio > arrayB[j]->aspect_ratio) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			case(28): {//movie_facebook_likes
+				if (arrayA[i]->movie_facebook_likes > arrayB[j]->movie_facebook_likes) {
+					array[a] = filmcpy(arrayB[j], array[a]);
+					j++;
+					break;
+				}
+				else {
+					array[a] = filmcpy(arrayA[i], array[a]);
+					i++;
+					break;
+				}
+			}
+			}
+		}
+		a++;
+	}//end of while loop
+	if (i == mid) {//arrayA caught up to end
+		while (j<k) {
+			array[a] = filmcpy(arrayB[j], array[a]);
+			j++; a++;
+		}
+	}
+	else if (j == k) {
+		while (i<mid) {
+			array[a] = filmcpy(arrayA[i], array[a]);
+			i++; a++;
+		}
+	}
+
+	free_strings(arrayA, mid);
+	free_strings(arrayB, k);
+	free(arrayA);
+	free(arrayB);
 }
