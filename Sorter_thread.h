@@ -64,6 +64,12 @@ struct sortcsv_arg{
 };
 typedef struct sortcsv_arg sortcsv_arg;
 
+struct film_arg{
+		film** film_list;
+		int amount;
+};
+typedef struct film_arg film_arg;
+
 //Suggestion: prototype a mergesort function
 film** mergesort(film** array, int size, int col);//pointer to unsorted array, size of array, column to sort by
 
