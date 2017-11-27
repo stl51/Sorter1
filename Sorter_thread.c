@@ -222,7 +222,7 @@ film** run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 				array_size = array_size * 2;
 				tids = (pthread_t*)realloc(tids, sizeof(pthread_t)*array_size);
 			}
-			pthread_create(tids[spawns - 1], 0, run_thru, dir_check, sortby, dest_dir, pathway);
+			pthread_create(&(tids[spawns - 1]), 0, run_thru, dir_check, sortby, dest_dir, pathway);//need a struct to hold all args
 			
         }
 		else {
@@ -237,8 +237,7 @@ film** run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 			char* dir_path = (char*)malloc(sizeof(char) * 4096);
 			dir_path = (char*)memcpy(dir_path, pathway, sizeof(char)*(strlen(pathway) - strlen(swing)));
 			dir_path[strlen(pathway) - strlen(swing)] = '\0';
-
-			pthread_create(tids[spawns - 1], 0, sort_csv, ofile, sortby, dir_path);
+            pthread_create(tids[spawns - 1], 0, sort_csv, ofile, sortby, dir_path);//see line 225
 			
 		}
         pathway[strlen(pathway)-strlen(swing)] = '\0';
