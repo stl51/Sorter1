@@ -45,6 +45,25 @@ struct film{
 };
 typedef struct film film;
 
+struct thread_arg{
+	//&(tids[spawns - 1]), 0, run_thru, dir_check, sortby, dest_dir, pathway
+	DIR* dir_check;
+	int sortby;
+	char* dest_dir;
+	char* pathway;
+	
+};
+typedef struct thread_arg thread_arg;
+
+struct sortcsv_arg{
+	//ofile, sortby, dir_path
+	FILE* ofile;
+	int sortby;
+	char* dir_path;
+	
+};
+typedef struct sortcsv_arg sortcsv_arg;
+
 //Suggestion: prototype a mergesort function
 film** mergesort(film** array, int size, int col);//pointer to unsorted array, size of array, column to sort by
 
