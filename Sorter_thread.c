@@ -265,13 +265,12 @@ int run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 			strcat(pathway,swing);
 			dir_check=opendir(pathway);
 		}
-		if (dir_check != NULL) {//dirfork(parameters); 
+		if (dir_check != NULL) { 
 			//protag is a folder, fork and handle
 			if (!strcmp(swing, ".") || !strcmp(swing,"..")) {
 				protag = readdir(folder);
 				continue;
 			}
-			//do the metadata computations done for file portion
 			errno = 0;
 			spawns++;
 			if (spawns > array_size) {
@@ -279,7 +278,6 @@ int run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 				pids = (pid_t*)realloc(pids, sizeof(pid_t)*array_size);
 			}
 			pids[spawns - 1] = fork();
-			//recursively call self
 			if (pids[spawns - 1] == 0) {//if child
 				//printf("Initial PID: %d\n", getpid());
 				spawns = 0;
@@ -290,11 +288,9 @@ int run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 				total = spawns + res;
 				exit(total);
 			}
-			//printf("%d,", pids[spawns - 1]);
-			//wait(&status);
-			//total = WEXITSTATUS(status) + total;
-		}
-		else /* if (errno == ENOTDIR)*/ {//filefork(parameters); //protag is a file, fork and handle
+        }
+		else {
+            //protag is a file, fork and handle
 			errno = 0;
 			spawns++;
 			if (spawns > array_size) {
@@ -319,9 +315,6 @@ int run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 				
 				exit(spawns);
 			}
-			//printf("%d,", pids[spawns - 1]);
-			//wait(&status);
-			//total = WEXITSTATUS(status) + total;
 		}
         pathway[strlen(pathway)-strlen(swing)] = '\0';
 	    protag = readdir(folder);
