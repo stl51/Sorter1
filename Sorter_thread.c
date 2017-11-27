@@ -291,7 +291,7 @@ int run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
         }
 		else {
             //protag is a file, fork and handle
-			errno = 0;
+			//errno = 0;//may not use or need this
 			spawns++;
 			if (spawns > array_size) {
 				array_size = array_size * 2;
@@ -299,17 +299,17 @@ int run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 			}
 			pids[spawns - 1] = fork();
 			if (pids[spawns - 1] == 0) {//if child
-				errno = 0;
+				//errno = 0;
 				//printf("Initial PID: %d\n", getpid());
 				spawns = 0;
 				total = 0;
 				memset(pids, 0, sizeof(pid_t)*array_size);
 				
-				FILE* ofile = fopen(pathway, "r");
+				//FILE* ofile = fopen(pathway, "r");
 				
-				char* dir_path = (char*) malloc(sizeof(char)*4096);
-                dir_path = (char*) memcpy(dir_path, pathway, sizeof(char)*(strlen(pathway)-strlen(swing)));
-                dir_path[strlen(pathway)-strlen(swing)] = '\0';
+				//char* dir_path = (char*) malloc(sizeof(char)*4096);
+                //dir_path = (char*) memcpy(dir_path, pathway, sizeof(char)*(strlen(pathway)-strlen(swing)));
+                //dir_path[strlen(pathway)-strlen(swing)] = '\0';
 
 				sort_csv(ofile, swing, sortby, dir_path, dest_dir);
 				

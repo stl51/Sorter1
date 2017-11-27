@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 
-FILE * sort_csv(FILE* file, char* filename, int sortby, char* curr_dir, char* dest_dir) {
+film** sort_csv(FILE* file, int sortby, char* curr_dir) {
 
 
 	int loop = 0;
@@ -269,7 +269,7 @@ FILE * sort_csv(FILE* file, char* filename, int sortby, char* curr_dir, char* de
 	//make a new string for filename
 	//filenamenew = filename with "-sorted-<fieldname>" appended
 	//fieldname determined by switching on sortby
-
+/*
 	char* sorttype;
 	switch (sortby)
 	{
@@ -378,8 +378,8 @@ FILE * sort_csv(FILE* file, char* filename, int sortby, char* curr_dir, char* de
 	}
 	fclose(nfile);
 	chdir(curr_dir);
-	
-	return nfile;//for compilation
+*/	
+	return array;
 	
 }
 
