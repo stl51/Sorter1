@@ -9,7 +9,6 @@
 film_arg * sort_csv(void * arg) {
 	FILE* file = ((sortcsv_arg *)arg)->ofile;
 	int sortby = ((sortcsv_arg *)arg)->sortby;
-	char* curr_dir = ((sortcsv_arg *)arg)->dir_path;
 
 	int loop = 0;
 	//FILE* file = stdin; this is now the input	/*CHANGE THIS STUFF so that it accepts .csv files in the directory*/
