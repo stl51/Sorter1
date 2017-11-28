@@ -197,14 +197,27 @@ film** run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 	int array_size = 1;
 	int status; int res;
 
+	//pthread_mutex_lock(&protaglock);
 
 	struct dirent* protag;	//protag is the file/directory in focus
-	protag = readdir(folder);
-	while (protag != NULL) {
+//	protag = readdir(folder);
+//	while (protag != NULL) {
+	while(true){
+		
+		pthread_mutex_lock(&protaglock);
+		protag = readdir(folder);
+		if(protag==NULL){
+				break;
+		}
+		pthread_mutex_unlock(&protaglock);
+		
 		char swing[1024];
 		strcpy(swing, protag->d_name);
-		protag = readdir(folder);
+//		protag = readdir(folder);
 		//lock above
+	
+		
+		
 		DIR* dir_check = opendir(swing);
 		if(dir_check==NULL){
 			if(pathway[strlen(pathway)-1] != '/'){
@@ -243,6 +256,7 @@ film** run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 		}
         pathway[strlen(pathway)-strlen(swing)] = '\0';
 	}
+	
     
     int i = 0;
 	film** a = (film**)malloc(sizeof(film*));
