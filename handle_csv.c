@@ -382,8 +382,10 @@ film_arg * sort_csv(void * arg) {
 	*/	
 	
 	film_arg * ret = (film_arg*)malloc(sizeof(film_arg));
+    ret->film_list = (film**) malloc (sizeof(film*));
 	int n;
 	for (n = 0; n < arrayloc; n++) {
+        (ret->film_list)[n] = (film*) malloc (sizeof(film));
 		filmcpy(array[n], (ret->film_list)[n]);
 	}
 	ret->amount = arrayloc;
