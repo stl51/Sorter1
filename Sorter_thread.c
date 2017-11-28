@@ -4,7 +4,6 @@
 #include "Sorter_thread.h"
 #include <dirent.h>
 #include <unistd.h>
-#include <errno.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <pthread.h>
@@ -206,7 +205,7 @@ film_arg * run_thru(void* arg) {
 	int spawns = 0; int total = 0;
 	pthread_t * tids = (pthread_t*)malloc(sizeof(pthread_t) * 1);//array of all threads this thread creates
 	int array_size = 1;
-	int status; int res;
+	long long status;
 
 	//pthread_mutex_lock(&protaglock);
 
@@ -254,7 +253,7 @@ film_arg * run_thru(void* arg) {
 			arg->sortby = sortby;
 			arg->dest_dir = strcpy(arg->dest_dir, dest_dir);
 			arg->pathway = strcpy(arg->pathway, pathway);
-			pthread_create(&(tids[spawns - 1]), 0, run_thru, (void*) arg);//need a struct to hold all args
+			pthread_create(&(tids[spawns - 1]), 0, (void*) run_thru, (void*) arg);//need a struct to hold all args
 			
         }
 		else {
@@ -272,8 +271,7 @@ film_arg * run_thru(void* arg) {
 			sortcsv_arg * args = (sortcsv_arg*)malloc(sizeof(sortcsv_arg));
 			args->ofile = ofile;
 			args->sortby = sortby;
-			args->dir_path = dir_path;
-            pthread_create(tids[spawns - 1], 0, sort_csv, (void*) args);//see line 225
+            pthread_create(&(tids[spawns - 1]), 0, (void*) sort_csv, (void*) args);//see line 225
 			
 		}
         pathway[strlen(pathway)-strlen(swing)] = '\0';
