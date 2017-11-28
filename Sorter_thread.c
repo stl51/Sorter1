@@ -195,9 +195,9 @@ film_arg * run_thru(void* arg) {
 	
 	DIR* folder = ((thread_arg*)arg)->dir_check;
 	int sortby = ((thread_arg*)arg)->sortby;
-	char* dest_dir; 
+    char dest_dir[1024]; 
 	strcpy(dest_dir, ((thread_arg*)arg)->dest_dir);
-	char* pathway;
+	char pathway[1024];
 	strcpy(pathway, ((thread_arg*)arg)->pathway);
 
 	//printf("PIDS of all child processes: ");
@@ -205,14 +205,14 @@ film_arg * run_thru(void* arg) {
 	int spawns = 0; int total = 0;
 	pthread_t * tids = (pthread_t*)malloc(sizeof(pthread_t) * 1);//array of all threads this thread creates
 	int array_size = 1;
-	long long status;
+	void * status;
 
 	//pthread_mutex_lock(&protaglock);
 
 	struct dirent* protag;	//protag is the file/directory in focus
 //	protag = readdir(folder);
 //	while (protag != NULL) {
-	while(true){
+	while(1){
 		
 		pthread_mutex_lock(&protaglock);
 		protag = readdir(folder);
@@ -282,7 +282,7 @@ film_arg * run_thru(void* arg) {
     int i = 0;
 	film_arg * a = (film_arg*)malloc(sizeof(film_arg));
 	while (i < spawns) {
-		pthread_join(tids[i], status);//status needs to be a void *, then casted into a film_arg* to be merged
+		pthread_join(tids[i], &status);//status needs to be a void *, then casted into a film_arg* to be merged
 		film_arg* b = (film_arg*)status;
 		int t = b->threads + a->threads;
 		a = insert_film(a->film_list, b->film_list, a->amount, b->amount, sortby);

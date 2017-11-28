@@ -75,10 +75,15 @@ typedef struct film_arg film_arg;
 film** mergesort(film** array, int size, int col);//pointer to unsorted array, size of array, column to sort by
 
 //LOCKSMITH:
-
+#ifndef insertlock
 pthread_mutex_t insertlock=PTHREAD_MUTEX_INITIALIZER;
+#endif
+#ifndef protaglock
 pthread_mutex_t protaglock=PTHREAD_MUTEX_INITIALIZER;
+#endif
+#ifndef pathlock
 pthread_mutex_t pathlock=PTHREAD_MUTEX_INITIALIZER;
+#endif
 
 
 
