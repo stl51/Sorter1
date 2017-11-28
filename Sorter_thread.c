@@ -250,7 +250,7 @@ film** run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 		pthread_join(tids[i], status);//status needs to be a void *, then casted into a film** to be merged
 
 		//add function that contains merge_sorted here
-
+		insert_film();//fill in desired arguments
 		//total = total + WEXITSTATUS(status);
 		i++;
 	}
