@@ -280,33 +280,37 @@ film_arg * run_thru(void* arg) {
 		pthread_mutex_unlock(&pathlock);
 	}
 	
-    
+	pthread_mutex_lock(&insertlock);
     int i = 0;
 	film_arg * a = (film_arg*)malloc(sizeof(film_arg));
 	while (i < spawns) {
 		pthread_join(tids[i], status);//status needs to be a void *, then casted into a film_arg* to be merged
-
+		film_arg* b = (film_arg*)status;
+		int t = b->threads + a->threads;
+		a = insert_film(a->film_list, b->film_list, a->amount, b->amount, sortby);
+		a->threads = t;
 		//add function that contains merge_sorted here
-		insert_film();//fill in desired arguments
+		
 		//total = total + WEXITSTATUS(status);
 		i++;
 	}
-	total = total + spawns;
+	pthread_mutex_unlock(&insertlock);
+	//total = total + spawns;
 	//printf("\ntotal number of child processes: %d\n", total);
 
 	closedir(folder);
 	return a;
 }
 
-film_arg* insert_film(film** array, film** arrayA, film** arrayB, int mid, int k, int col) {
+film_arg* insert_film(film** arrayA, film** arrayB, int mid, int k, int col) {
 
-	film_arg* final=(film_arg*)malloc(sizeof(film_arg));
+	film_arg* final;
 
-	pthread_mutex_lock(&insertlock);
+	//pthread_mutex_lock(&insertlock);
+
+		final=merge_sorted(arrayA,arrayB,mid,k,col);
 		
-		final=merge_sorted(array,arrayA,arrayB,mid,k,col);
-		
-	pthread_mutex_unlock(&insertlock);
+	//pthread_mutex_unlock(&insertlock);
 	
 	return final;
 	
@@ -314,12 +318,12 @@ film_arg* insert_film(film** array, film** arrayA, film** arrayB, int mid, int k
 
 
 
-film_arg* merge_sorted(film** array, film** arrayA, film** arrayB, int mid, int k, int col) {//returns a new sorted array. Please modify so it returns a struct that also contains the size of the array (mid+k)
+film_arg* merge_sorted(film** arrayA, film** arrayB, int mid, int k, int col) {//returns a new sorted array. Please modify so it returns a struct that also contains the size of the array (mid+k)
 	//array = already created but empty array to place films into, mid = sizeof A, k = sizeof B, col = sortby
 
 
 	film_arg* final=(film_arg*)malloc(sizeof(film_arg));
-	final->size=mid+k;
+	final->amount=mid+k;
 	final->film_list=(film**)malloc(sizeof(film*)*(mid+k));
 	film** array=final->film_list;
 	

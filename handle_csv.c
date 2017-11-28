@@ -387,6 +387,8 @@ film_arg * sort_csv(void * arg) {
 	for (n = 0; n < arrayloc; n++) {
 		filmcpy(array[n], (ret->film_list)[n]);
 	}
+	ret->amount = arrayloc;
+	ret->threads = 0;
 	return ret;
 	
 }
