@@ -327,6 +327,10 @@ film_arg* merge_sorted(film** arrayA, film** arrayB, int mid, int k, int col) {/
 	film_arg* final=(film_arg*)malloc(sizeof(film_arg));
 	final->amount=mid+k;
 	final->film_list=(film**)malloc(sizeof(film*)*(mid+k));
+	int z;
+	for (z = 0; z < final->amount; z++) {
+		(final->film_list)[z] = (film*)malloc(sizeof(film));
+	}
 	film** array=final->film_list;
 	
 	
