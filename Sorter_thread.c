@@ -179,17 +179,28 @@ int main(int argc, char** argv) {
 	strcat(pathway,"/");
 	strcat(pathway,src_dir);
 	
+	thread_arg * arg = (thread_arg*)malloc(sizeof(thread_arg));
+	arg->dir_check = src_folder;
+	arg->sortby = sortby;
+	arg->dest_dir = strcpy(arg->dest_dir, dest_dir);
+	arg->pathway = strcpy(arg->pathway, pathway);
 	
-	
-	run_thru(src_folder, sortby, dest_dir,pathway);
+	run_thru((void*)arg);
 	//printf("\ntotal number of child processes: %d\n", total);
 
 	return 0;
 }
 
 
-film** run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
+film** run_thru(void* arg) {
 	
+	DIR* folder = ((thread_arg*)arg)->dir_check;
+	int sortby = ((thread_arg*)arg)->sortby;
+	char* dest_dir; 
+	strcpy(dest_dir, ((thread_arg*)arg)->dest_dir);
+	char* pathway;
+	strcpy(pathway, ((thread_arg*)arg)->pathway);
+
 	//printf("PIDS of all child processes: ");
 
 	int spawns = 0; int total = 0;
@@ -209,10 +220,11 @@ film** run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 		if(protag==NULL){
 				break;
 		}
-		pthread_mutex_unlock(&protaglock);
+		
 		
 		char swing[1024];
 		strcpy(swing, protag->d_name);
+		pthread_mutex_unlock(&protaglock);
 //		protag = readdir(folder);
 		//lock above
 	
@@ -236,7 +248,12 @@ film** run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 				array_size = array_size * 2;
 				tids = (pthread_t*)realloc(tids, sizeof(pthread_t)*array_size);
 			}
-			pthread_create(&(tids[spawns - 1]), 0, run_thru, dir_check, sortby, dest_dir, pathway);//need a struct to hold all args
+			thread_arg * arg = (thread_arg*)malloc(sizeof(thread_arg));
+			arg->dir_check = dir_check;
+			arg->sortby = sortby;
+			arg->dest_dir = strcpy(arg->dest_dir, dest_dir);
+			arg->pathway = strcpy(arg->pathway, pathway);
+			pthread_create(&(tids[spawns - 1]), 0, run_thru, (void*) arg);//need a struct to hold all args
 			
         }
 		else {
@@ -251,7 +268,11 @@ film** run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 			char* dir_path = (char*)malloc(sizeof(char) * 4096);
 			dir_path = (char*)memcpy(dir_path, pathway, sizeof(char)*(strlen(pathway) - strlen(swing)));
 			dir_path[strlen(pathway) - strlen(swing)] = '\0';
-            pthread_create(tids[spawns - 1], 0, sort_csv, ofile, sortby, dir_path);//see line 225
+			sortcsv_arg * args = (sortcsv_arg*)malloc(sizeof(sortcsv_arg));
+			args->ofile = ofile;
+			args->sortby = sortby;
+			args->dir_path = dir_path;
+            pthread_create(tids[spawns - 1], 0, sort_csv, (void*) args);//see line 225
 			
 		}
         pathway[strlen(pathway)-strlen(swing)] = '\0';
