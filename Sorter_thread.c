@@ -187,8 +187,10 @@ int main(int argc, char** argv) {
 	arg->sortby = sortby;
 	strcpy(arg->dest_dir, dest_dir);
 	strcpy(arg->pathway, pathway);
-	
-	run_thru((void*)arg);
+	film_arg* res;
+	res = run_thru((void*)arg);
+	film** arr = ((film_arg*)res)->film_list;
+	total = ((film_arg*)res)->threads;
 	//printf("\ntotal number of child processes: %d\n", total);
 
 	return 0;
