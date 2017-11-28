@@ -285,6 +285,8 @@ film_arg * run_thru(void* arg) {
 	pthread_mutex_lock(&insertlock);
     int i = 0;
 	film_arg * a = (film_arg*)malloc(sizeof(film_arg));
+	a->amount = 0;
+	a->threads = spawns;
 	while (i < spawns) {
 		pthread_join(tids[i], &status);//status needs to be a void *, then casted into a film_arg* to be merged
 		film_arg* b = (film_arg*)status;
