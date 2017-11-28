@@ -77,6 +77,7 @@ film** mergesort(film** array, int size, int col);//pointer to unsorted array, s
 
 pthread_mutex_t insertlock=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t protaglock=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t pathlock=PTHREAD_MUTEX_INITIALIZER;
 
 
 
