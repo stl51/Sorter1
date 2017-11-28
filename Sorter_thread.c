@@ -285,6 +285,7 @@ film_arg * run_thru(void* arg) {
 	pthread_mutex_lock(&insertlock);
     int i = 0;
 	film_arg * a = (film_arg*)malloc(sizeof(film_arg));
+	a->film_list = (film**)malloc(sizeof(film*));
 	a->amount = 0;
 	a->threads = spawns;
 	while (i < spawns) {
