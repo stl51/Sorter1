@@ -72,6 +72,7 @@ typedef struct film_arg film_arg;
 
 //Suggestion: prototype a mergesort function
 film** mergesort(film** array, int size, int col);//pointer to unsorted array, size of array, column to sort by
+pthread_mutex_t insertlock=PTHREAD_MUTEX_INITIALIZER;;
 
 void free_strings(film** array, int len);//free string pointers for each struct when freeing an array
 film* filmcpy(film* filmA, film* filmB);//copy a film struct function
