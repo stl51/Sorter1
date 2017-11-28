@@ -192,7 +192,7 @@ int main(int argc, char** argv) {
 }
 
 
-film** run_thru(void* arg) {
+film_arg * run_thru(void* arg) {
 	
 	DIR* folder = ((thread_arg*)arg)->dir_check;
 	int sortby = ((thread_arg*)arg)->sortby;
@@ -231,6 +231,7 @@ film** run_thru(void* arg) {
 		
 		
 		DIR* dir_check = opendir(swing);
+		pthread_mutex_lock(&pathlock);
 		if(dir_check==NULL){
 			if(pathway[strlen(pathway)-1] != '/'){
 				strcat(pathway,"/");
@@ -276,13 +277,14 @@ film** run_thru(void* arg) {
 			
 		}
         pathway[strlen(pathway)-strlen(swing)] = '\0';
+		pthread_mutex_unlock(&pathlock);
 	}
 	
     
     int i = 0;
-	film** a = (film**)malloc(sizeof(film*));
+	film_arg * a = (film_arg*)malloc(sizeof(film_arg));
 	while (i < spawns) {
-		pthread_join(tids[i], status);//status needs to be a void *, then casted into a film** to be merged
+		pthread_join(tids[i], status);//status needs to be a void *, then casted into a film_arg* to be merged
 
 		//add function that contains merge_sorted here
 		insert_film();//fill in desired arguments

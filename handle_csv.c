@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 
-film** sort_csv(void * arg) {
+film_arg * sort_csv(void * arg) {
 	FILE* file = ((sortcsv_arg *)arg)->ofile;
 	int sortby = ((sortcsv_arg *)arg)->sortby;
 	char* curr_dir = ((sortcsv_arg *)arg)->dir_path;
@@ -380,8 +380,14 @@ film** sort_csv(void * arg) {
 	}
 	fclose(nfile);
 	chdir(curr_dir);
-*/	
-	return array;
+	*/	
+	
+	film_arg * ret = (film_arg*)malloc(sizeof(film_arg));
+	int n;
+	for (n = 0; n < arrayloc; n++) {
+		filmcpy(array[n], (ret->film_list)[n]);
+	}
+	return ret;
 	
 }
 
