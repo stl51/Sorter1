@@ -180,6 +180,7 @@ int main(int argc, char** argv) {
 	strcat(pathway,src_dir);
 	
 	
+	
 	run_thru(src_folder, sortby, dest_dir,pathway);
 	//printf("\ntotal number of child processes: %d\n", total);
 
@@ -260,8 +261,32 @@ film** run_thru(DIR* folder, int sortby, char* dest_dir, char* pathway) {
 	return a;
 }
 
-film** merge_sorted(film** array, film** arrayA, film** arrayB, int mid, int k, int col) {//returns a new sorted array. Please modify so it returns a struct that also contains the size of the array (mid+k)
+film_arg* insert_film(film** array, film** arrayA, film** arrayB, int mid, int k, int col) {
+
+	film_arg* final=(film_arg*)malloc(sizeof(film_arg));
+
+	pthread_mutex_lock(&insertlock);
+		
+		final=merge_sorted(array,arrayA,arrayB,mid,k,col);
+		
+	pthread_mutex_unlock(&insertlock);
+	
+	return final;
+	
+}	
+
+
+
+film_arg* merge_sorted(film** array, film** arrayA, film** arrayB, int mid, int k, int col) {//returns a new sorted array. Please modify so it returns a struct that also contains the size of the array (mid+k)
 	//array = already created but empty array to place films into, mid = sizeof A, k = sizeof B, col = sortby
+
+
+	film_arg* final=(film_arg*)malloc(sizeof(film_arg));
+	final->size=mid+k;
+	final->film_list=(film**)malloc(sizeof(film*)*(mid+k));
+	film** array=final->film_list;
+	
+	
 	int i = 0; int j = 0; int a = 0;
 	while (i<mid && j<k) {
 		//depending on what column we're sorting by, do things
@@ -749,4 +774,7 @@ film** merge_sorted(film** array, film** arrayA, film** arrayB, int mid, int k, 
 	free_strings(arrayB, k);
 	free(arrayA);
 	free(arrayB);
+	
+	return final;
+	
 }
