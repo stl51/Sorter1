@@ -8,6 +8,10 @@
 #include <sys/wait.h>
 #include <pthread.h>
 
+pthread_mutex_t insertlock=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t protaglock=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t pathlock=PTHREAD_MUTEX_INITIALIZER;
+
 int main(int argc, char** argv) {
 
 	int sortby;
