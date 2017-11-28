@@ -49,8 +49,8 @@ struct thread_arg{
 	//&(tids[spawns - 1]), 0, run_thru, dir_check, sortby, dest_dir, pathway
 	DIR* dir_check;
 	int sortby;
-	char* dest_dir;
-	char* pathway;
+	char dest_dir[1024];
+	char pathway[1024];
 	
 };
 typedef struct thread_arg thread_arg;
@@ -59,7 +59,7 @@ struct sortcsv_arg{
 	//ofile, sortby, dir_path
 	FILE* ofile;
 	int sortby;
-	char* dir_path;
+    char dir_path[1024];
 	
 };
 typedef struct sortcsv_arg sortcsv_arg;

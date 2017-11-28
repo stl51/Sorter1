@@ -185,8 +185,8 @@ int main(int argc, char** argv) {
 	thread_arg * arg = (thread_arg*)malloc(sizeof(thread_arg));
 	arg->dir_check = src_folder;
 	arg->sortby = sortby;
-	arg->dest_dir = strcpy(arg->dest_dir, dest_dir);
-	arg->pathway = strcpy(arg->pathway, pathway);
+	strcpy(arg->dest_dir, dest_dir);
+	strcpy(arg->pathway, pathway);
 	
 	run_thru((void*)arg);
 	//printf("\ntotal number of child processes: %d\n", total);
@@ -221,10 +221,9 @@ film_arg * run_thru(void* arg) {
 		pthread_mutex_lock(&protaglock);
 		protag = readdir(folder);
 		if(protag==NULL){
-				break;
+            pthread_mutex_unlock(&protaglock);
+			break;
 		}
-		
-		
 		char swing[1024];
 		strcpy(swing, protag->d_name);
 		pthread_mutex_unlock(&protaglock);
@@ -245,7 +244,8 @@ film_arg * run_thru(void* arg) {
 		if (dir_check != NULL) { 
 			//protag is a folder, fork and handle
 			if (!strcmp(swing, ".") || !strcmp(swing,"..")) {
-				continue;
+				pthread_mutex_unlock(&pathlock);
+                continue;
 			}
 			spawns++;
 			if (spawns > array_size) {
@@ -255,8 +255,8 @@ film_arg * run_thru(void* arg) {
 			thread_arg * arg = (thread_arg*)malloc(sizeof(thread_arg));
 			arg->dir_check = dir_check;
 			arg->sortby = sortby;
-			arg->dest_dir = strcpy(arg->dest_dir, dest_dir);
-			arg->pathway = strcpy(arg->pathway, pathway);
+			strcpy(arg->dest_dir, dest_dir);
+			strcpy(arg->pathway, pathway);
 			pthread_create(&(tids[spawns - 1]), 0, (void*) run_thru, (void*) arg);//need a struct to hold all args
 			
         }
