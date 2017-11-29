@@ -7,6 +7,7 @@
 
 
 film_arg * sort_csv(void * arg) {
+	printf("%d,", (int)pthread_self());
 	FILE* file = ((sortcsv_arg *)arg)->ofile;
 	int sortby = ((sortcsv_arg *)arg)->sortby;
 

@@ -174,8 +174,9 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
-	int total;
-	//printf("Initial PID: %d\n", getpid());
+	//int total;
+	printf("Initial TID: %d\n", (int)pthread_self());
+	printf("TIDs of all child threads: ");
 	
 	char pathway[4096];
 	getcwd(pathway,sizeof(pathway));
@@ -190,16 +191,33 @@ int main(int argc, char** argv) {
 	film_arg* res;
 	res = run_thru((void*)arg);
 	int size = ((film_arg*)res)->amount;
-	film** arr = ((film_arg*)res)->film_list;
-	total = ((film_arg*)res)->threads;
-	//printf("\ntotal number of child processes: %d\n", total);
+	film** array = ((film_arg*)res)->film_list;
+	//total = ((film_arg*)res)->threads;
+	printf("\ntotal number of threads: %d\n", ((film_arg*)res)->threads);
+
+	char* nfilename = (char*)malloc(sizeof(char) * 100);
+	//memcpy(nfilename, filename, strlen(filename) - 4);
+	//nfilename[strlen(filename) - 4] = '\0';
+	//nfilename = strcpy(nfilename, filename);
+	nfilename = strcat("AllFiles", "-sorted-");
+	nfilename = strcat(nfilename, argv[2]);
+	nfilename = strcat(nfilename, ".csv");
+	//make a new file and write to that file the sorted array
+
+	chdir(dest_folder);
+	FILE* nfile = fopen(nfilename, "w");
+	int b;
+	for (b = 0; b<size; b++) {
+		fprintf(nfile, "%s,%s,%d,%d,%d,%d,%s,%d,%d,%s,%s,%s,%d,%d,%s,%d,%s,%s,%d,%s,%s,%s,%d,%d,%d,%f,%f,%d\n", array[b]->color, array[b]->director_name, array[b]->num_critic_for_reviews, array[b]->duration, array[b]->director_facebook_likes, array[b]->actor_3_facebook_likes, array[b]->actor_2_name, array[b]->actor_1_facebook_likes, array[b]->gross, array[b]->genres, array[b]->actor_1_name, array[b]->movie_title, array[b]->num_voted_users, array[b]->cast_total_facebook_likes, array[b]->actor_3_name, array[b]->facenumber_in_poster, array[b]->plot_keywords, array[b]->movie_imdb_link, array[b]->num_user_for_reviews, array[b]->language, array[b]->country, array[b]->content_rating, array[b]->budget, array[b]->title_year, array[b]->actor_2_facebook_likes, array[b]->imdb_score, array[b]->aspect_ratio, array[b]->movie_facebook_likes);
+	}
+	fclose(nfile);
 
 	return 0;
 }
 
 
 film_arg * run_thru(void* arg) {
-	
+	printf("%d,", (int)pthread_self());
 	DIR* folder = ((thread_arg*)arg)->dir_check;
 	int sortby = ((thread_arg*)arg)->sortby;
     char dest_dir[1024]; 
