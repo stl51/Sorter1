@@ -204,7 +204,7 @@ int main(int argc, char** argv) {
 	nfilename = strcat(nfilename, ".csv");
 	//make a new file and write to that file the sorted array
 
-	chdir(dest_folder);
+	chdir(dest_dir);
 	FILE* nfile = fopen(nfilename, "w");
 	int b;
 	for (b = 0; b<size; b++) {
@@ -227,7 +227,7 @@ film_arg * run_thru(void* arg) {
 
 	//printf("PIDS of all child processes: ");
 
-	int spawns = 0; int total = 0;
+	int spawns = 0;
 	pthread_t * tids = (pthread_t*)malloc(sizeof(pthread_t) * 1);//array of all threads this thread creates
 	int array_size = 1;
 	void * status;
