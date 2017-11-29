@@ -176,7 +176,7 @@ int main(int argc, char** argv) {
 
 	//int total;
 	printf("Initial TID: %d\n", (int)pthread_self());
-	printf("TIDs of all child threads: ");
+	printf("TIDs of all threads: ");
 	
 	char pathway[4096];
 	getcwd(pathway,sizeof(pathway));
@@ -193,13 +193,13 @@ int main(int argc, char** argv) {
 	int size = ((film_arg*)res)->amount;
 	film** array = ((film_arg*)res)->film_list;
 	//total = ((film_arg*)res)->threads;
-	printf("\ntotal number of threads: %d\n", ((film_arg*)res)->threads);
+	printf("\ntotal number of threads: %d\n", ((film_arg*)res)->threads+1);
 
 	char* nfilename = (char*)malloc(sizeof(char) * 100);
 	//memcpy(nfilename, filename, strlen(filename) - 4);
 	//nfilename[strlen(filename) - 4] = '\0';
 	//nfilename = strcpy(nfilename, filename);
-	nfilename = strcat("AllFiles", "-sorted-");
+	nfilename = strcpy(nfilename, "AllFiles-sorted-");
 	nfilename = strcat(nfilename, argv[2]);
 	nfilename = strcat(nfilename, ".csv");
 	//make a new file and write to that file the sorted array
