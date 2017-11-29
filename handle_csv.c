@@ -19,13 +19,13 @@ film_arg * sort_csv(void * arg) {
 	while (fgets(line, sizeof(line), file) != NULL) {
 		loop++;
 		//printf("%d\n", loop-1);
-		//if (loop == 1) {		//skip first line containing categories
-		//	//continue;
+		if (loop == 1) {		//skip first line containing categories
+			continue;
 		//	if(strcmp(line,"color,director_name,num_critic_for_reviews,duration,director_facebook_likes,actor_3_facebook_likes,actor_2_name,actor_1_facebook_likes,gross,genres,actor_1_name,movie_title,num_voted_users,cast_total_facebook_likes,actor_3_name,facenumber_in_poster,plot_keywords,movie_imdb_link,num_user_for_reviews,language,country,content_rating,budget,title_year,actor_2_facebook_likes,imdb_score,aspect_ratio,movie_facebook_likes")!=0){
 		//		FILE* idrc = NULL;
 		//		return idrc;//error invalid file
 		//	}
-		//} this doesn't work atm
+		}
 
 		film* x = NULL;
 		x = (struct film*)malloc(sizeof(film));	//current film record being made
