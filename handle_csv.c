@@ -11,6 +11,7 @@ film_arg * sort_csv(void * arg) {
 	int sortby = ((sortcsv_arg *)arg)->sortby;
 
 	int loop = 0;
+	int emp = 0;
 	//FILE* file = stdin; this is now the input	/*CHANGE THIS STUFF so that it accepts .csv files in the directory*/
 	char line[5000];
 	int a_size = 50;
@@ -248,6 +249,12 @@ film_arg * sort_csv(void * arg) {
 					a_size = a_size * 2;
 					array = (film**)realloc(array, sizeof(film*)*a_size);
 				}
+				if (!strcmp(x->movie_title, "")) {
+					if (!strcmp(x->movie_imdb_link, "")) {
+						emp = 1;
+						break;
+					}
+				}
 				array[arrayloc] = (film*)malloc(sizeof(film));
 				array[arrayloc] = filmcpy(x, array[arrayloc]);
 				free(x);
@@ -261,6 +268,10 @@ film_arg * sort_csv(void * arg) {
 
 		}
 
+		if (emp) {
+			emp = 0;
+			break;
+		}
 
 	}//done reading file
 	array = mergesort(array, arrayloc, sortby);

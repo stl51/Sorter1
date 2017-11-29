@@ -175,7 +175,7 @@ int main(int argc, char** argv) {
 	}
 
 	int total;
-	printf("Initial PID: %d\n", getpid());
+	//printf("Initial PID: %d\n", getpid());
 	
 	char pathway[4096];
 	getcwd(pathway,sizeof(pathway));
@@ -189,6 +189,7 @@ int main(int argc, char** argv) {
 	strcpy(arg->pathway, pathway);
 	film_arg* res;
 	res = run_thru((void*)arg);
+	int size = ((film_arg*)res)->amount;
 	film** arr = ((film_arg*)res)->film_list;
 	total = ((film_arg*)res)->threads;
 	//printf("\ntotal number of child processes: %d\n", total);
