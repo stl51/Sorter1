@@ -1,7 +1,7 @@
-default: Sorter_thread.c handle_csv.c MergeSort.c
-	gcc -g -Wall -pthread -c Sorter_thread.c handle_csv.c MergeSort.c
-	gcc -g -Wall -pthread Sorter_thread.o handle_csv.o MergeSort.o -o sort_thread
-	rm Sorter_thread.o 
+default: Sorter_server.c handle_csv.c MergeSort.c
+	gcc -g -Wall -pthread -c Sorter_server.c handle_csv.c MergeSort.c
+	gcc -g -Wall -pthread Sorter_server.o handle_csv.o MergeSort.o -o sort_thread
+	rm Sorter_server.o 
 	rm handle_csv.o 
 	rm MergeSort.o 
 

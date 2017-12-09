@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Sorter_thread.h"
+#include "Sorter_server.h"
 #include <string.h>
 #include <pthread.h>
 
